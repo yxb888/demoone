@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.pact.PactTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.PactType" >
+    <result column="pacttypeid" property="pacttypeid" jdbcType="VARCHAR" />
+    <result column="pacttypename" property="pacttypename" jdbcType="VARCHAR" />
+    <result column="pacttypeaccess" property="pacttypeaccess" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="queryPactTypecount" resultType="long">
+  	select count(*) from pacttype
+  </select>
+  
+  <select id="queryPactType" resultMap="BaseResultMap" parameterType="com.xb.domain.PactType">
+		  	select * from pacttype 
+		  	 limit #{start},#{rows}
+  </select>
+  
+  <delete id="deletePactType" parameterType="com.xb.domain.PactType">
+  		delete from pacttype where pacttypeid=#{pacttypeid}
+  </delete>
+  
+  
+  	 <delete id="deletePactTypeAll">
+		delete from pacttype  where pacttypeid in
+	 <foreach collection="array" item="pacttypeid" index="index" open="(" separator="," close=")">
+            #{pacttypeid}
+	</foreach>
+  
+  </delete>
+  
+
+  
+  <insert id="insert" parameterType="com.xb.domain.PactType" >
+    insert into pacttype (pacttypeid, pacttypename, pacttypeaccess
+      )
+    values (#{pacttypeid,jdbcType=VARCHAR}, #{pacttypename,jdbcType=VARCHAR}, #{pacttypeaccess,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xb.domain.PactType" >
+    insert into pacttype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pacttypeid != null" >
+        pacttypeid,
+      </if>
+      <if test="pacttypename != null" >
+        pacttypename,
+      </if>
+      <if test="pacttypeaccess != null" >
+        pacttypeaccess,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pacttypeid != null" >
+        #{pacttypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="pacttypename != null" >
+        #{pacttypename,jdbcType=VARCHAR},
+      </if>
+      <if test="pacttypeaccess != null" >
+        #{pacttypeaccess,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.table.TableMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.Table" >
+    <id column="tableid" property="tableid" jdbcType="INTEGER" />
+    <result column="tablename" property="tablename" jdbcType="VARCHAR" />
+    <result column="typeid" property="typeid" jdbcType="INTEGER" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="createTime" property="createtime" jdbcType="DATE" />
+    <result column="adjunct" property="adjunct" jdbcType="VARCHAR" />
+    <association property="tabletype" javaType="com.xb.domain.TableType" >
+     	<result column="tabletypeid" property="tabletypeid" jdbcType="INTEGER" />
+	    <result column="tabletypename" property="tabletypename" jdbcType="VARCHAR" />
+	    <result column="tablequeryname" property="tablequeryname" jdbcType="VARCHAR" />
+	    <result column="typestate" property="typestate" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  
+<!--   总条数 -->
+  <select id="queryTablescount" resultType="long" parameterType="com.xb.domain.Table" >
+  		select count(*) from tables t, tabletype ty where t.typeid=ty.tabletypeid 
+  		<if test=" tablename != null and tablename != ''">
+  			and tablename like '%${tablename}%'
+  		</if>
+  		<if test=" typeid != null and typeid != ''">
+  			and typeid =${typeid}
+  		</if>
+  		<if test=" strattime != null and strattime != ''">
+  			and createtime > '${strattime}'
+  		</if>
+  		<if test=" endtime != null and endtime != ''">
+  			and createtime &lt; '${endtime}'
+  		</if>
+  </select>
+<!--   分页 -->
+  <select id="queryTables" resultMap="BaseResultMap">
+ 		 select * from  tables t, tabletype ty where t.typeid=ty.tabletypeid  
+ 		 	<if test=" tables.tablename != null and tables.tablename != ''">
+	  			and t.tablename like '%${tables.tablename}%'
+	  		</if>
+	  		<if test=" tables.typeid != null and tables.typeid != ''">
+	  			and t.typeid =${tables.typeid}
+	  		</if>
+	  		<if test=" tables.strattime != null and tables.strattime != ''">
+	  			and t.createTime > '${tables.strattime}'
+	  		</if>
+	  		<if test=" tables.endtime != null and tables.endtime != ''">
+	  			and t.createTime &lt; '${tables.endtime}'
+	  		</if>
+ 		 limit #{start},#{rows}
+  </select>
+  
+  
+  
+  
+  
+  
+   <delete id="deleteTable" parameterType="com.xb.domain.Table">
+  		delete from tables where tableid=#{tableid}
+  </delete>
+  
+  
+  <delete id="deleteAll">
+		delete from tables  where tableid in
+	 <foreach collection="array" item="tableid" index="index" open="(" separator="," close=")">
+            #{tableid}
+	</foreach>
+  
+  </delete>
+  
+</mapper>

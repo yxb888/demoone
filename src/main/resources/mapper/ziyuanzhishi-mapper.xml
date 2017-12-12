@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.ziyuanzhishi.ziyuanzhishiMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.ziyuanzhishi" >
+    <id column="t_id" property="tId" jdbcType="VARCHAR" />
+    <result column="t_title" property="tTitle" jdbcType="VARCHAR" />
+    <result column="t_type_name" property="tTypeName" jdbcType="VARCHAR" />
+    <result column="t_keyword" property="tKeyword" jdbcType="VARCHAR" />
+    <result column="t_issur" property="tIssur" jdbcType="VARCHAR" />
+    <result column="t_releasetime" property="tReleasetime" jdbcType="TIMESTAMP" />
+    <result column="t_fujian_number" property="tFujianNumber" jdbcType="VARCHAR" />
+     <result column="t_zhishi_fujian" property="tZhishiFujian" jdbcType="VARCHAR" />
+    <result column="t_zhishi_conent" property="tZhishiConent" jdbcType="VARCHAR" />
+    <!--property= 主表实体类里面的声明          javaType= 实体类路径    用association-->
+  	<association property="ziyuanzhishitype" javaType="com.xb.domain.ziyuanzhishitype">
+  	 <id column="t_type_id" property="tTypeId" jdbcType="VARCHAR" />
+    <result column="t_type" property="tType" jdbcType="VARCHAR" />
+    <result column="t_explain" property="tExplain" jdbcType="VARCHAR" />
+    <result column="t_count" property="tCount" jdbcType="VARCHAR" />
+  </association>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    t_id, t_title, t_type_name, t_keyword, t_issur, t_releasetime, t_fujian_number
+  </sql>
+      <!--  两表总条数 --> 
+	  <select id="queryTotal" resultType="long"  parameterType="com.xb.domain.ziyuanzhishi">
+	  		select count(*) from t_lf_zhishi a , t_lf_zhishi_type b where a.t_type_name=b.t_type_id
+	  		<if test="tTitle!= null and tTitle!=''" >
+		 		 and t_title like '%${tTitle}%' 
+		   </if>
+		   <if test="tKeyword!= null and tKeyword!=''" >
+		 		 and t_keyword like '%${tKeyword}%' 
+		   </if>
+	  </select>
+
+  <!--   分页 -->
+	<select id="PageList" resultMap="BaseResultMap" parameterType="com.xb.domain.ziyuanzhishi">
+		select * from t_lf_zhishi a , t_lf_zhishi_type b where a.t_type_name=b.t_type_id 
+				<if test="zs.tTitle!= null and zs.tTitle!=''" >
+          		 and t_title like '%${zs.tTitle}%' 
+        		</if>
+        		 <if test="zs.tKeyword!= null and zs.tKeyword!=''" >
+		 		 and t_keyword like '%${zs.tKeyword}%' 
+		  		 </if>
+		  limit #{start},#{end}  
+	</select> 
+  
+<!--   查询导出数据 -->
+    <select id="queryaddress" resultMap="BaseResultMap">
+	  	select * from t_lf_zhishi 
+	  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_lf_zhishi
+    where t_id = #{tId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_lf_zhishi
+    where t_id = #{tId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.xb.domain.ziyuanzhishi" >
+    insert into t_lf_zhishi (t_id, t_title, t_type_name, 
+      t_keyword, t_issur, t_releasetime, 
+      t_fujian_number)
+    values (#{tId,jdbcType=VARCHAR}, #{tTitle,jdbcType=VARCHAR}, #{tTypeName,jdbcType=VARCHAR}, 
+      #{tKeyword,jdbcType=VARCHAR}, #{tIssur,jdbcType=VARCHAR}, #{tReleasetime,jdbcType=TIMESTAMP}, 
+      #{tFujianNumber,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xb.domain.ziyuanzhishi" >
+    insert into t_lf_zhishi
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        t_id,
+      </if>
+      <if test="tTitle != null" >
+        t_title,
+      </if>
+      <if test="tTypeName != null" >
+        t_type_name,
+      </if>
+      <if test="tKeyword != null" >
+        t_keyword,
+      </if>
+      <if test="tIssur != null" >
+        t_issur,
+      </if>
+      <if test="tReleasetime != null" >
+        t_releasetime,
+      </if>
+      <if test="tFujianNumber != null" >
+        t_fujian_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        #{tId,jdbcType=VARCHAR},
+      </if>
+      <if test="tTitle != null" >
+        #{tTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="tTypeName != null" >
+        #{tTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="tKeyword != null" >
+        #{tKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="tIssur != null" >
+        #{tIssur,jdbcType=VARCHAR},
+      </if>
+      <if test="tReleasetime != null" >
+        #{tReleasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tFujianNumber != null" >
+        #{tFujianNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xb.domain.ziyuanzhishi" >
+    update t_lf_zhishi
+    <set >
+      <if test="tTitle != null" >
+        t_title = #{tTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="tTypeName != null" >
+        t_type_name = #{tTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="tKeyword != null" >
+        t_keyword = #{tKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="tIssur != null" >
+        t_issur = #{tIssur,jdbcType=VARCHAR},
+      </if>
+      <if test="tReleasetime != null" >
+        t_releasetime = #{tReleasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tFujianNumber != null" >
+        t_fujian_number = #{tFujianNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where t_id = #{tId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xb.domain.ziyuanzhishi" >
+    update t_lf_zhishi
+    set t_title = #{tTitle,jdbcType=VARCHAR},
+      t_type_name = #{tTypeName,jdbcType=VARCHAR},
+      t_keyword = #{tKeyword,jdbcType=VARCHAR},
+      t_issur = #{tIssur,jdbcType=VARCHAR},
+      t_releasetime = #{tReleasetime,jdbcType=TIMESTAMP},
+      t_fujian_number = #{tFujianNumber,jdbcType=VARCHAR}
+    where t_id = #{tId,jdbcType=VARCHAR}
+  </update>
+</mapper>

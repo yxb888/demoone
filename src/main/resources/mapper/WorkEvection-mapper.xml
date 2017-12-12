@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.workObj.WorkEvectionMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.WorkEvection" >
+<!--   	出差表 -->
+    <result column="evectionid" property="evectionid" jdbcType="VARCHAR" />
+    <result column="evectionsite" property="evectionsite" jdbcType="VARCHAR" />
+    <result column="evectionstartdate" property="evectionstartdate" jdbcType="DATE" />
+    <result column="enddate" property="enddate" jdbcType="DATE" />
+    <result column="applydate" property="applydate" jdbcType="DATE" />
+    <result column="applystate" property="applystate" jdbcType="INTEGER" />
+    <result column="evectionname" property="evectionname" jdbcType="VARCHAR" />
+    <result column="applycause" property="applycause" jdbcType="VARCHAR" />
+    
+        <!--     员工表 -->
+	<association property="user" javaType="com.xb.domain.User">
+	    <result column="USERID" property="userid" jdbcType="INTEGER" />
+	    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+	    <result column="USERPWD" property="userpwd" jdbcType="VARCHAR" />
+	    <result column="USERMOBILE" property="usermobile" jdbcType="VARCHAR" />
+	</association>
+  </resultMap>
+  
+  	<!--   	总条数  出差-->
+    <select id="queryTotal" resultType="long"  parameterType="com.xb.domain.WorkEvection">
+  		select  count(*)  from zsj_work_evection
+  </select>
+  
+    <!--   分页 出差 -->
+
+	<select id="PageList" resultMap="BaseResultMap" parameterType="com.xb.domain.WorkEvection">
+			select * from zsj_work_evection w , s_user u where w.evectionname=u.userid limit #{start},#{end}
+	</select>
+	
+	<!--   查询详情  出差-->
+	<select id="queryWorkEvectionById" resultMap="BaseResultMap">
+			select * from zsj_work_evection w , s_user u where w.evectionname=u.userid and evectionid=#{evectionid} 
+	</select>
+	
+	<!-- 	批量删除 -->
+	 <delete id="deleteWorkEvectionAll">
+	delete from zsj_work_evection  where evectionid in
+	 <foreach collection="array" item="tId" index="index" open="(" separator="," close=")">
+            #{tId}
+	</foreach>
+  
+  </delete>
+  
+  <insert id="insert" parameterType="com.xb.domain.WorkEvection" >
+    insert into zsj_work_evection (evectionid, evectionsite, evectionstartdate, 
+      enddate, applydate, applystate, 
+      evectionname)
+    values (#{evectionid,jdbcType=VARCHAR}, #{evectionsite,jdbcType=VARCHAR}, #{evectionstartdate,jdbcType=DATE}, 
+      #{enddate,jdbcType=DATE}, #{applydate,jdbcType=DATE}, #{applystate,jdbcType=INTEGER}, 
+      #{evectionname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xb.domain.WorkEvection" >
+    insert into zsj_work_evection
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="evectionid != null" >
+        evectionid,
+      </if>
+      <if test="evectionsite != null" >
+        evectionsite,
+      </if>
+      <if test="evectionstartdate != null" >
+        evectionstartdate,
+      </if>
+      <if test="enddate != null" >
+        enddate,
+      </if>
+      <if test="applydate != null" >
+        applydate,
+      </if>
+      <if test="applystate != null" >
+        applystate,
+      </if>
+      <if test="evectionname != null" >
+        evectionname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="evectionid != null" >
+        #{evectionid,jdbcType=VARCHAR},
+      </if>
+      <if test="evectionsite != null" >
+        #{evectionsite,jdbcType=VARCHAR},
+      </if>
+      <if test="evectionstartdate != null" >
+        #{evectionstartdate,jdbcType=DATE},
+      </if>
+      <if test="enddate != null" >
+        #{enddate,jdbcType=DATE},
+      </if>
+      <if test="applydate != null" >
+        #{applydate,jdbcType=DATE},
+      </if>
+      <if test="applystate != null" >
+        #{applystate,jdbcType=INTEGER},
+      </if>
+      <if test="evectionname != null" >
+        #{evectionname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

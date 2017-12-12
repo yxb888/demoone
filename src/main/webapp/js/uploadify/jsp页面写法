@@ -1,0 +1,37 @@
+
+   <%
+    String basePath=request.getContextPath()+"/"; 
+    
+    %>
+1.引入
+<script type="text/javascript" src="jquery/jquery-3.2.1.min.js"></script>
+<script src="uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="uploadify/uploadify.css">
+2.标签
+<div id="queue"></div>   进度条标签
+<input id="file_upload" name="photo" type="file"  />  //上传组件标签
+<div  id="imglist"></div>图片显示标签
+<input type="hidden" name="imgpath" id="imgpath"  /> //上传的路径标签   保存导数据库的真正的文件路径
+3.脚本
+<script type="text/javascript">
+		$(function() {
+			$('#file_upload').uploadify({
+				 
+				'swf'      : 'uploadify/uploadify.swf',//动画地址
+				'uploader' : 'questionAction_test.action',  //上传的action地址
+				'fileTypeExts'  :   '*.gif;*.jpg;*.png;*.bmp',  //允许上传的文件格式
+				'multi'             :   false,   //是否开启多文件上传
+				'method'            :   'post', //提交方式
+				'fileObjName':'photo',    //服务器 接收的文件名称  
+			 
+                'onUploadSuccess' : function(file,data) {  
+                //参数data服务端输出返回的信息
+                 
+                  $("#imglist").append("<img  src='<%=basePath%>"+data+"'  width=30 height=30  />")
+                   
+                  $("#imgpath").val(data);
+            },  
+			});
+		});
+	</script>
+4.<constant value="1024000000000" name="struts.multipart.maxSize"/>  struts2 设置上传文件 配置项

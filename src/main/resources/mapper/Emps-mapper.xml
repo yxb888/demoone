@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.pact.EmpsMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.Emps" >
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="usernameeng" property="usernameeng" jdbcType="VARCHAR" />
+    <result column="usersex" property="usersex" jdbcType="INTEGER" />
+    <result column="usernumber" property="usernumber" jdbcType="INTEGER" />
+    <result column="userzzmm" property="userzzmm" jdbcType="INTEGER" />
+    <result column="userjg" property="userjg" jdbcType="VARCHAR" />
+    <result column="usermz" property="usermz" jdbcType="INTEGER" />
+    <result column="userxl" property="userxl" jdbcType="INTEGER" />
+    <result column="useraddriss" property="useraddriss" jdbcType="VARCHAR" />
+    <result column="userjjposn" property="userjjposn" jdbcType="VARCHAR" />
+    <result column="userphone" property="userphone" jdbcType="VARCHAR" />
+    <result column="userdqaddriss" property="userdqaddriss" jdbcType="VARCHAR" />
+    <result column="famiphone" property="famiphone" jdbcType="VARCHAR" />
+    <result column="hy" property="hy" jdbcType="INTEGER" />
+    <result column="userjjphone" property="userjjphone" jdbcType="VARCHAR" />
+    <result column="empid" property="empid" jdbcType="VARCHAR" />
+    <result column="rzzt" property="rzzt" jdbcType="INTEGER" />
+    <result column="jobgw" property="jobgw" jdbcType="VARCHAR" />
+    <result column="jzgw" property="jzgw" jdbcType="VARCHAR" />
+    <result column="bm" property="bm" jdbcType="VARCHAR" />
+    <result column="jobphone" property="jobphone" jdbcType="VARCHAR" />
+    <result column="rztime" property="rztime" jdbcType="TIMESTAMP" />
+    <result column="zztime" property="zztime" jdbcType="TIMESTAMP" />
+    <result column="ygxs" property="ygxs" jdbcType="INTEGER" />
+    <result column="xuex" property="xuex" jdbcType="INTEGER" />
+    <result column="tz" property="tz" jdbcType="VARCHAR" />
+    <result column="byschool" property="byschool" jdbcType="VARCHAR" />
+    <result column="emile" property="emile" jdbcType="VARCHAR" />
+    <result column="height" property="height" jdbcType="VARCHAR" />
+    <result column="zhuany" property="zhuany" jdbcType="VARCHAR" />
+    <result column="beiz" property="beiz" jdbcType="VARCHAR" />
+    <result column="fujian" property="fujian" jdbcType="VARCHAR" />
+    <result column="jobaddriss" property="jobaddriss" jdbcType="VARCHAR" />
+  </resultMap>
+	<select id="queryOrgscount" resultType="long" parameterType="com.xb.domain.Emps">
+  		select count(*) from emps where 1 = 1
+  		
+	  	<if test="bmstr != null and bmstr != ''">
+	  		and bm = '${bmstr}'
+	  	</if>
+  </select>
+  <select id="queryOrgsPage" resultMap="BaseResultMap" parameterType="com.xb.domain.Emps">
+		  	select * from emps where 1= 1
+		  	<if test="emps.bmstr != null and emps.bmstr != ''">
+		  		and bm = '${emps.bmstr}'
+		  	</if>
+		  	<if test="emps.usernameStr != null and emps.usernameStr != ''">
+		  		and username = '${emps.usernameStr}'
+		  	</if>
+		  	 limit #{start},#{rows}
+  </select>
+  <select id="queryEmps" resultMap="BaseResultMap">
+  	select * from emps
+  </select> 	
+</mapper>

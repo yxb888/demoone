@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.role.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.Role" >
+    <id column="r_id" property="rId" jdbcType="VARCHAR" />
+    <result column="r_name" property="rName" jdbcType="VARCHAR" />
+  </resultMap>
+
+<select id="selectRoleList" resultMap="BaseResultMap" parameterType="java.lang.Long">
+
+select * from s_role
+
+</select>
+
+<select id="queryTotal" resultType="long" parameterType="com.xb.domain.Role">
+select count(*) from s_role where 1=1
+</select>
+  <!--   分页 -->
+
+	<select id="PageList" resultMap="BaseResultMap" parameterType="com.xb.domain.Role">
+			select * from s_role limit #{start},#{end}
+		
+	</select>
+	
+	
+  
+  <sql id="Base_Column_List" >
+    r_id, r_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from s_role
+    where r_id = #{rId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteUserRoleRelation" parameterType="java.lang.String" >
+    delete from s_roleuser
+    where ur_uid = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="addUserRoleRelation" parameterType="java.util.List">
+   insert into s_roleuser (ur_uid,ur_rid)   
+    values  
+    <foreach collection="list" item="item" index="index" separator="," >  
+        (#{item.userId},#{item.roleId})  
+    </foreach> 
+  
+  </insert>
+  
+  
+  
+  
+  <insert id="insertSelective" parameterType="com.xb.domain.Role" >
+    insert into s_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rId != null" >
+        r_id,
+      </if>
+      <if test="rName != null" >
+        r_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rId != null" >
+        #{rId,jdbcType=VARCHAR},
+      </if>
+      <if test="rName != null" >
+        #{rName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xb.domain.Role" >
+    update s_role
+    <set >
+      <if test="rName != null" >
+        r_name = #{rName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where r_id = #{rId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xb.domain.Role" >
+    update s_role
+    set r_name = #{rName,jdbcType=VARCHAR}
+    where r_id = #{rId,jdbcType=VARCHAR}
+  </update>
+</mapper>

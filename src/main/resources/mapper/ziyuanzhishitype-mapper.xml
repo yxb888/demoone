@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.ziyuanzhishi.ziyuanzhishitypeMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.ziyuanzhishitype" >
+    <id column="t_type_id" property="tTypeId" jdbcType="VARCHAR" />
+    <result column="t_type" property="tType" jdbcType="VARCHAR" />
+    <result column="t_explain" property="tExplain" jdbcType="VARCHAR" />
+    <result column="t_count" property="tCount" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <!--  类型总条数 --> 
+  <select id="queryTotal2" resultType="long"  parameterType="com.xb.domain.ziyuanzhishitype">
+  		select count(*) from t_lf_zhishi_type where 1=1
+  	
+  </select> 
+  
+  <!--   类型分页 -->
+
+	<select id="PageList2" resultMap="BaseResultMap" parameterType="com.xb.domain.ziyuanzhishitype">
+		select * from t_lf_zhishi_type  limit #{start},#{end}  
+
+	</select> 
+	<!-- 新增类型 -->
+ <insert id="addType" parameterType="com.xb.domain.ziyuanzhishitype" >
+    insert into t_lf_zhishi_type (t_type_id, t_type, t_explain, 
+      t_count)
+    values (#{tTypeId,jdbcType=VARCHAR}, #{tType,jdbcType=VARCHAR}, #{tExplain,jdbcType=VARCHAR}, 
+      #{tCount,jdbcType=VARCHAR})
+  </insert>
+</mapper>

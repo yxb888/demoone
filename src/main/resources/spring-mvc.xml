@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:task="http://www.springframework.org/schema/task"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+    	http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/task  
+  		http://www.springframework.org/schema/task/spring-task-3.2.xsd " >
+
+    <!-- 启动自动扫描 -->
+    <context:component-scan base-package="com.xb.*" />
+
+
+    <!-- 注册MVC注解驱动 -->
+    <mvc:annotation-driven />
+
+    <!-- 静态资源可访问的设置方式 -->
+    <mvc:default-servlet-handler />
+
+    <!-- 配置视图解析器，可以显式设置，也可以不设置，不设置会依据SpringMVC的默认设置 -->
+    <bean id="viewResolver"
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    
+     <!--上文件上传解析-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--文件的最大上传大小:单位（byte：字节）-->
+        <property name="maxUploadSize" value="20480000"/>
+        <property name="defaultEncoding" value="utf-8"/>
+    </bean>
+
+    <!-- task任务扫描注解 -->  
+<task:annotation-driven/>  
+<!-- <context:component-scan base-package="com.xb.web.user"></context:component-scan>   -->
+       <!-- 拦截器 -->
+<!-- 	<mvc:interceptors> -->
+<!-- 		<mvc:interceptor> -->
+<!-- 			<mvc:mapping path="/**" /> -->
+<!-- 			<bean class="com.xb.interceptors.SecurityInterceptor"> -->
+<!-- 				不需要权限验证的地址 -->
+<!-- 				<property name="excludeUrls"> -->
+<!-- 					<list> -->
+<!-- 						<value>/initController/init</value>初始化数据库 -->
+<!-- 						<value>/treeController/queryTreeList</value>首页左侧功能菜单 -->
+<!-- 						<value>/userController/reg</value>用户注册 -->
+<!-- 						 <value>/user/login</value>用户登录 -->
+<!-- 						<value>/userController/error</value>用户登录 -->
+<!-- 						<value>/roleController/roleNodes</value> -->
+<!-- 						<value>/roleController/treeNodes</value> -->
+<!-- 						<value>/roleController/roleList</value> -->
+<!-- 						<value>/roleController/toShowRole</value> -->
+<!-- 						<value>/treeController/toShow</value> -->
+<!-- 						<value>/userController/loginCombogrid</value>用户登录里面的combogrid功能 -->
+<!-- 						<value>/userController/logout</value>注销登录 -->
+<!-- 						<value>/userController/userList</value>用户列表信息 -->
+<!-- 						<value>/roleController/tree</value>用户访问角色树(只能看到自己拥有的角色) -->
+<!-- 						<value>/roleController/addUserRoleRelation</value>用户访问角色树 -->
+<!-- 						<value>/userController/editCurrentUserPwdPage</value>用户修改自己的密码页面 -->
+<!-- 						<value>/userController/editCurrentUserPwd</value>用户修改自己的密码 -->
+<!-- 						<value>/userController/currentUserRolePage</value>查看自己的角色页面 -->
+<!-- 						<value>/treeController/getCurrentUserTreeNodes</value>查看自己的权限页面 -->
+<!-- 						<value>/roleController/toTree</value> -->
+<!-- 					</list> -->
+<!-- 				</property> -->
+<!-- 			</bean> -->
+<!-- 		</mvc:interceptor> -->
+<!-- 	</mvc:interceptors> -->
+    
+    	<!-- 	aop简洁版  记录操作信息--> 
+	    <bean id="aopDemo" class="com.xb.web.aop.AopDemo" /> 
+	    <aop:config> 
+		<aop:advisor  pointcut="execution(* com.xb.service.*..*Impl.*(..))" advice-ref="aopDemo" /> 
+	    </aop:config> 
+<!-- 	    <aop:config> -->
+<!--           <aop:aspect id="sec" ref="provincesAop"> -->
+<!--             <aop:pointcut id="allAddMethod" expression="execution(* com.xb.service.*..*Impl.*(..))"/> -->
+<!--              <aop:advisor  pointcut="execution(* com.xb.service.*..*Impl.*(..))" advice-ref="aopDemo" /> -->
+<!--             例外通知 -->
+<!--             <aop:after-throwing method="throwingx" pointcut-ref="allAddMethod"/> -->
+<!--             前置通知 -->
+<!--             <aop:before method="checkSecurity" pointcut-ref="allAddMethod" /> -->
+<!--             后置通知 -->
+<!--             <aop:after-returning method="after" pointcut-ref="allAddMethod"/> -->
+<!--           </aop:aspect> -->
+<!--        </aop:config> -->
+</beans>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.user.UserKeyMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.UserKey" >
+    <result column="keyid" property="keyid" jdbcType="VARCHAR" />
+    <result column="keyname" property="keyname" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <select id="queryUserKey" resultMap="BaseResultMap"> 
+  	select * from zsj_user_key
+  </select>
+  
+  
+  <insert id="insert" parameterType="com.xb.domain.UserKey" >
+    insert into zsj_user_key (keyid, keyname)
+    values (#{keyid,jdbcType=VARCHAR}, #{keyname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xb.domain.UserKey" >
+    insert into zsj_user_key
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="keyid != null" >
+        keyid,
+      </if>
+      <if test="keyname != null" >
+        keyname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="keyid != null" >
+        #{keyid,jdbcType=VARCHAR},
+      </if>
+      <if test="keyname != null" >
+        #{keyname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

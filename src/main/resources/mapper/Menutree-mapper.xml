@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.tree.MenutreeMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.Permission" >
+    <id column="t_id" property="tId" jdbcType="VARCHAR" />
+    <result column="t_name" property="tName" jdbcType="VARCHAR" />
+    <result column="t_text" property="tText" jdbcType="VARCHAR" />
+    <result column="t_url" property="tUrl" jdbcType="VARCHAR" />
+    <result column="t_pid" property="tPid" jdbcType="VARCHAR" />
+    <result column="t_leaf" property="tLeaf" jdbcType="VARCHAR" />
+  </resultMap>
+    <resultMap id="BaseResultMapp" type="com.xb.domain.DictTree" >
+       <id column="t_dict_id" property="tDictId" jdbcType="VARCHAR" />
+    <result column="t_dict_name" property="tDictName" jdbcType="VARCHAR" />
+    <result column="t_dict_text" property="tDictText" jdbcType="VARCHAR" />
+    <result column="t_dict_url" property="tDictUrl" jdbcType="VARCHAR" />
+    <result column="t_dict_pid" property="tDictPid" jdbcType="VARCHAR" />
+    <result column="t_dict_leaf" property="tDictLeaf" jdbcType="VARCHAR" />
+    <result column="t_dict_code" property="tDictCode" jdbcType="VARCHAR" />
+    <result column="t_dict_enname" property="tDictEnname" jdbcType="VARCHAR" />
+    <result column="t_text" property="tText" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="queryTree" resultMap="BaseResultMap">
+  	select * from t_tree
+  </select>
+  
+  <select id="selectMenuList" resultType="java.util.HashMap" parameterType="java.lang.String">
+			  select 
+			   t_id as "id", 
+			t_text as "name", 
+			t_url as "addPage", 
+			t_pid as "pid"   from s_roletree s ,t_permission t where  s.rt_tid=t.t_id and rt_rid=#{roleid} 
+  
+  </select>
+  <select id="selectMenuLists" resultType="java.util.HashMap">
+  select  distinct t_id as "id", 
+			t_text as "name", 
+			t_url as "addPage", 
+			t_pid as "pid" ,t_leaf as "left" from t_permission where t_leaf=#{username}
+  
+  </select>
+  <select id="selectTreeList" resultType="java.util.HashMap">
+  select  distinct t_id as "id", 
+			t_text as "name", 
+			t_url as "addPage", 
+			t_pid as "pid" ,t_leaf as "left" from t_permission 
+  
+  </select>
+  
+  <delete id="deleteByrole" parameterType="java.lang.String">
+   delete from s_roletree where rt_rid=#{roleid}
+  
+  </delete>
+  
+    <insert id="addRoleTreeRelation" parameterType="java.util.List">
+   insert into s_roletree (rt_rid,rt_tid)   
+    values  
+    <foreach collection="list" item="item" index="index" separator="," >  
+        (#{item.roleid},#{item.treeid})  
+    </foreach> 
+  
+  </insert>
+  
+  
+  <select id="selectMenuListDict" resultType="java.util.HashMap">
+  select  distinct
+  			 t_dict_id as "id", 
+			t_dict_text as "name", 
+			t_dict_url as "addPage", 
+			t_dict_pid as "pid" ,
+			t_dict_code as "code" 
+			
+			 from yxb_dict_tree
+  
+  </select>
+  <select id="getCurrenUserNodes" resultType="java.util.HashMap" parameterType="com.xb.domain.User">
+  select
+     t.t_id as "id", 
+			t.t_text as "name", 
+			t.t_url as "addPage", 
+			t.t_pid as "pid",
+			t.t_leaf as "leaf"
+  
+  
+  from s_roleuser sr,s_roletree sro,t_permission t where
+  
+  sr.ur_rid=sro.rt_rid   and
+  sro.rt_tid=t.t_id      and
+  sr.ur_uid=#{userid} and
+  t.t_leaf=#{lift}
+  
+  </select>
+  
+  <!-- 查询菜单列表 -->
+	<select id="selectMenuList11" resultType="java.util.HashMap">
+		select distinct p3.t_id as "id", 
+			p3.t_text as "name", 
+			p3.t_url as "addPage", 
+			p3.t_pid as "pid" 
+		from t_permission p3
+		right join (select p2.t_id, p2.t_pid 
+					from t_permission p2 
+					right join (select distinct p1.t_permission_id 
+								from t_r_p_mid p1 
+								right join (select um.t_role_id 
+											from t_u_r_mid um 
+											right join (select u.userId
+														from s_user u 
+														where userName = #{username}) u2
+											on um.t_user_id = u2.userId) um2
+								on p1.t_role_id = um2.t_role_id
+								where p1.t_permission_id is not null) rp1
+					on p2.t_id = rp1.t_permission_id) p4
+		on p3.t_id = p4.t_id or p3.t_id = p4.t_pid
+	</select>
+  
+  <delete id="deletetree" parameterType="String">
+  delete from t_permission where t_id=#{idss}
+  </delete>
+  
+  <update id="updatetree" parameterType="com.xb.domain.Permission">
+  update t_permission
+    set 
+      t_text = #{tText,jdbcType=VARCHAR}
+    where t_id = #{tId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  
+  <insert id="insert" parameterType="com.xb.domain.Permission" >
+    insert into MENUTREE (ID, TEXT, STATE, 
+      PID, URL)
+    values (#{id,jdbcType=VARCHAR}, #{text,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
+      #{pid,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR})
+  </insert>
+  <insert id="addtree" parameterType="com.xb.domain.Permission" >
+    insert into t_permission (t_id, t_name, t_text, 
+      t_url, t_pid, t_leaf)
+    values (#{tId,jdbcType=VARCHAR}, #{tName,jdbcType=VARCHAR}, #{tText,jdbcType=VARCHAR}, 
+      #{tUrl,jdbcType=VARCHAR}, #{tPid,jdbcType=VARCHAR}, #{tLeaf,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.xb.domain.Permission" >
+    insert into MENUTREE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="text != null" >
+        TEXT,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="url != null" >
+        URL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="text != null" >
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

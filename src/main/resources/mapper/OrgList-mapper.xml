@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.org.OrgListMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.OrgList" >
+    <result column="orgid" property="orgid" jdbcType="VARCHAR" />
+    <result column="orguuid" property="orguuid" jdbcType="VARCHAR" />
+    <result column="orgname" property="orgname" jdbcType="VARCHAR" />
+    <result column="orgyingyu" property="orgyingyu" jdbcType="VARCHAR" />
+    <result column="orgboos" property="orgboos" jdbcType="VARCHAR" />
+    <result column="orgupboos" property="orgupboos" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <insert id="addOrg" parameterType="com.xb.domain.OrgList">
+	  	insert into 
+	  		orglist(orgid,orguuid,orgname,orgyingyu,orgboos,orgupboos) 
+	  		values(#{orgid},#{orguuid},#{orgname},#{orgyingyu},#{orgboos},#{orgupboos})
+  </insert>
+  
+  
+<!--   	总条数 -->
+    <select id="queryTotal" resultType="long"  parameterType="com.xb.domain.OrgList">
+  		select  count(*)  from orglist o where 1=1 
+  		 <if test="orgBM != null and orgBM != ''" >
+           and o.orguuid like '%${orgBM}%'
+         </if>
+          <if test="orgMC != null and orgMC!=''" >
+           and o.orgname like '%${orgMC}%' 
+         </if>
+          <if test="orgYYMC != null and orgYYMC!=''" >
+           and o.orgyingyu like '%${orgYYMC}%'
+         </if>
+  </select>
+  <!--   分页 -->
+
+	<select id="PageList" resultMap="BaseResultMap" parameterType="com.xb.domain.OrgList">
+			select * from orglist t where 1=1
+				<if test="orglist.orgBM != null and orglist.orgBM!=''" >
+		           and t.orguuid like '%${orglist.orgBM}%'
+		         </if>
+		          <if test="orglist.orgMC != null and orglist.orgMC!=''" >
+		           and orgname like '%${orglist.orgMC}%' 
+		         </if>
+		          <if test="orglist.orgYYMC != null and orglist.orgYYMC!=''" >
+		           and orgyingyu like '%${orglist.orgYYMC}%'
+		         </if>
+			 limit #{start},#{end}
+		
+	</select>
+<!-- 	删除废弃 -->
+  <delete id="deleteAll">
+	delete from orglist  where orgid in
+	 <foreach collection="idStr" item="orgid" index="index" open="(" separator="," close=")">
+            #{orgid}
+	</foreach>
+
+	
+</delete>
+<!-- 	批量删除 -->
+	 <delete id="deleteAllOrg">
+	delete from orglist  where orgid in
+	 <foreach collection="array" item="tId" index="index" open="(" separator="," close=")">
+            #{tId}
+	</foreach>
+  
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.xb.domain.OrgList" >
+    insert into orglist (orgid, orguuid, orgname, 
+      orgyingyu, orgboos, orgupboos
+      )
+    values (#{orgid,jdbcType=VARCHAR}, #{orguuid,jdbcType=VARCHAR}, #{orgname,jdbcType=VARCHAR}, 
+      #{orgyingyu,jdbcType=VARCHAR}, #{orgboos,jdbcType=VARCHAR}, #{orgupboos,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xb.domain.OrgList" >
+    insert into orglist
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orgid != null" >
+        orgid,
+      </if>
+      <if test="orguuid != null" >
+        orguuid,
+      </if>
+      <if test="orgname != null" >
+        orgname,
+      </if>
+      <if test="orgyingyu != null" >
+        orgyingyu,
+      </if>
+      <if test="orgboos != null" >
+        orgboos,
+      </if>
+      <if test="orgupboos != null" >
+        orgupboos,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orgid != null" >
+        #{orgid,jdbcType=VARCHAR},
+      </if>
+      <if test="orguuid != null" >
+        #{orguuid,jdbcType=VARCHAR},
+      </if>
+      <if test="orgname != null" >
+        #{orgname,jdbcType=VARCHAR},
+      </if>
+      <if test="orgyingyu != null" >
+        #{orgyingyu,jdbcType=VARCHAR},
+      </if>
+      <if test="orgboos != null" >
+        #{orgboos,jdbcType=VARCHAR},
+      </if>
+      <if test="orgupboos != null" >
+        #{orgupboos,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

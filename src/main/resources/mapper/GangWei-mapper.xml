@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.gangwei.GangWeiMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.GangWei" >
+    <id column="t_gw_id" property="tGwId" jdbcType="VARCHAR" />
+    <result column="t_gw_name" property="tGwName" jdbcType="VARCHAR" />
+    <result column="t_gw_egname" property="tGwEgname" jdbcType="VARCHAR" />
+    <result column="t_gw_sjgw" property="tGwSjgw" jdbcType="VARCHAR" />
+    <result column="t_gw_info" property="tGwInfo" jdbcType="VARCHAR" />
+    <result column="t_gw_fzr" property="tGwFzr" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    t_gw_id, t_gw_name, t_gw_egname, t_gw_sjgw, t_gw_info, t_gw_fzr
+  </sql>
+
+  <delete id="delAllGangWei" parameterType="String">
+  		 delete  from fzr_gangwei where t_gw_id in
+   <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+  
+  </delete>
+  
+   <update id="updateDQSave" parameterType="com.xb.domain.GangWei" >
+    update fzr_gangwei
+    <set >
+      <if test="tGwName != null" >
+        t_gw_name = #{tGwName,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwEgname != null" >
+        t_gw_egname = #{tGwEgname,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwSjgw != null" >
+        t_gw_sjgw = #{tGwSjgw,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwInfo != null" >
+        t_gw_info = #{tGwInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwFzr != null" >
+        t_gw_fzr = #{tGwFzr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where t_gw_id = #{tGwId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <select id="queryTotal" resultType="long" parameterType="com.xb.domain.GangWei">
+  		select count(*) from fzr_gangwei where 1=1
+  </select>
+  <select id="PageList" resultMap="BaseResultMap" parameterType="com.xb.domain.GangWei">
+  	select * from fzr_gangwei limit #{start},#{end}
+  </select>
+  <!--   查询单条数据 -->
+    <select id="queryGangWei" resultMap="BaseResultMap">
+	  	select * from fzr_gangwei s where 1=1 
+		  	<if test="tGwId!=null and tGwId!=''"> 
+		  		and s.t_gw_id=#{tGwId}
+		  	</if>
+	  </select>
+  
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from fzr_gangwei
+    where t_gw_id = #{tGwId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from fzr_gangwei
+    where t_gw_id = #{tGwId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="addGangWei" parameterType="com.xb.domain.GangWei" >
+    insert into fzr_gangwei (t_gw_id, t_gw_name, t_gw_egname, 
+      t_gw_sjgw, t_gw_info, t_gw_fzr
+      )
+    values (#{tGwId,jdbcType=VARCHAR}, #{tGwName,jdbcType=VARCHAR}, #{tGwEgname,jdbcType=VARCHAR}, 
+      #{tGwSjgw,jdbcType=VARCHAR}, #{tGwInfo,jdbcType=VARCHAR}, #{tGwFzr,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xb.domain.GangWei" >
+    insert into fzr_gangwei
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tGwId != null" >
+        t_gw_id,
+      </if>
+      <if test="tGwName != null" >
+        t_gw_name,
+      </if>
+      <if test="tGwEgname != null" >
+        t_gw_egname,
+      </if>
+      <if test="tGwSjgw != null" >
+        t_gw_sjgw,
+      </if>
+      <if test="tGwInfo != null" >
+        t_gw_info,
+      </if>
+      <if test="tGwFzr != null" >
+        t_gw_fzr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tGwId != null" >
+        #{tGwId,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwName != null" >
+        #{tGwName,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwEgname != null" >
+        #{tGwEgname,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwSjgw != null" >
+        #{tGwSjgw,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwInfo != null" >
+        #{tGwInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwFzr != null" >
+        #{tGwFzr,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xb.domain.GangWei" >
+    update fzr_gangwei
+    <set >
+      <if test="tGwName != null" >
+        t_gw_name = #{tGwName,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwEgname != null" >
+        t_gw_egname = #{tGwEgname,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwSjgw != null" >
+        t_gw_sjgw = #{tGwSjgw,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwInfo != null" >
+        t_gw_info = #{tGwInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="tGwFzr != null" >
+        t_gw_fzr = #{tGwFzr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where t_gw_id = #{tGwId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xb.domain.GangWei" >
+    update fzr_gangwei
+    set t_gw_name = #{tGwName,jdbcType=VARCHAR},
+      t_gw_egname = #{tGwEgname,jdbcType=VARCHAR},
+      t_gw_sjgw = #{tGwSjgw,jdbcType=VARCHAR},
+      t_gw_info = #{tGwInfo,jdbcType=VARCHAR},
+      t_gw_fzr = #{tGwFzr,jdbcType=VARCHAR}
+    where t_gw_id = #{tGwId,jdbcType=VARCHAR}
+  </update>
+</mapper>

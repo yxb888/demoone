@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.dict.CestDao" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.Paramerta" >
+    <id column="p_id" property="pId" jdbcType="VARCHAR" />
+    <result column="p_timege" property="pTimege" jdbcType="VARCHAR" />
+    <result column="p_cspwd" property="pCspwd" jdbcType="VARCHAR" />
+    <result column="p_csline" property="pCsline" jdbcType="VARCHAR" />
+    <result column="p_xq" property="pXq" jdbcType="VARCHAR" />
+    <result column="p_disk" property="pDisk" jdbcType="VARCHAR" />
+    <result column="p_lostline" property="pLostline" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    p_id, p_timege, p_cspwd, p_csline, p_xq, p_disk, p_lostline
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"  >
+    select 
+    *
+    from yxb_paramert
+   
+  </select>
+    <select id="getHeicharts" resultType="java.util.LinkedHashMap"  >
+		select a.mon,sum(case when b.USERID is null then 0 else 1 end) sum 
+		from monsyue a 
+		left join s_user b 
+		on a.mon=date_format(b.createtime,'%Y-%m') 
+		where a.mon  &gt;="2017-01" and a.mon &lt;="2017-12" 
+		group by a.mon;
+  </select>
+    <select id="getHeichartsA" resultType="java.util.LinkedHashMap"  >
+		select a.mon,sum(case when b.id is null then 0 else 1 end) sum 
+		from monsyue a 
+		left join f_renyuan b 
+		on a.mon=date_format(b.cdate,'%Y-%m') 
+		where a.mon  &gt;="2017-01" and a.mon &lt;="2017-12" 
+		group by a.mon;
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from yxb_paramert
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.xb.domain.Paramerta" >
+    insert into yxb_paramert (p_id, p_timege, p_cspwd, 
+      p_csline, p_xq, p_disk, 
+      p_lostline)
+    values (#{pId,jdbcType=VARCHAR}, #{pTimege,jdbcType=VARCHAR}, #{pCspwd,jdbcType=VARCHAR}, 
+      #{pCsline,jdbcType=VARCHAR}, #{pXq,jdbcType=VARCHAR}, #{pDisk,jdbcType=VARCHAR}, 
+      #{pLostline,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xb.domain.Paramerta" >
+    insert into yxb_paramert
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="pTimege != null" >
+        p_timege,
+      </if>
+      <if test="pCspwd != null" >
+        p_cspwd,
+      </if>
+      <if test="pCsline != null" >
+        p_csline,
+      </if>
+      <if test="pXq != null" >
+        p_xq,
+      </if>
+      <if test="pDisk != null" >
+        p_disk,
+      </if>
+      <if test="pLostline != null" >
+        p_lostline,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="pTimege != null" >
+        #{pTimege,jdbcType=VARCHAR},
+      </if>
+      <if test="pCspwd != null" >
+        #{pCspwd,jdbcType=VARCHAR},
+      </if>
+      <if test="pCsline != null" >
+        #{pCsline,jdbcType=VARCHAR},
+      </if>
+      <if test="pXq != null" >
+        #{pXq,jdbcType=VARCHAR},
+      </if>
+      <if test="pDisk != null" >
+        #{pDisk,jdbcType=VARCHAR},
+      </if>
+      <if test="pLostline != null" >
+        #{pLostline,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xb.domain.Paramerta" >
+    update yxb_paramert
+    <set >
+      <if test="pTimege != null" >
+        p_timege = #{pTimege,jdbcType=VARCHAR},
+      </if>
+      <if test="pCspwd != null" >
+        p_cspwd = #{pCspwd,jdbcType=VARCHAR},
+      </if>
+      <if test="pCsline != null" >
+        p_csline = #{pCsline,jdbcType=VARCHAR},
+      </if>
+      <if test="pXq != null" >
+        p_xq = #{pXq,jdbcType=VARCHAR},
+      </if>
+      <if test="pDisk != null" >
+        p_disk = #{pDisk,jdbcType=VARCHAR},
+      </if>
+      <if test="pLostline != null" >
+        p_lostline = #{pLostline,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeySelectivea" parameterType="com.xb.domain.Paramerta" >
+    update yxb_paramert
+    <set >
+      <if test="pTimege != null" >
+        p_timege = #{pTimege,jdbcType=VARCHAR},
+      </if>
+      <if test="pCspwd != null" >
+        p_cspwd = #{pCspwd,jdbcType=VARCHAR},
+      </if>
+ 
+    </set>
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xb.domain.Paramerta" >
+    update yxb_paramert
+    set p_timege = #{pTimege,jdbcType=VARCHAR},
+      p_cspwd = #{pCspwd,jdbcType=VARCHAR},
+      p_csline = #{pCsline,jdbcType=VARCHAR},
+      p_xq = #{pXq,jdbcType=VARCHAR},
+      p_disk = #{pDisk,jdbcType=VARCHAR},
+      p_lostline = #{pLostline,jdbcType=VARCHAR}
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </update>
+</mapper>

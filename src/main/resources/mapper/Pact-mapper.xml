@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.pact.PactMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.Pact" >
+    <result column="pactid" property="pactid" jdbcType="VARCHAR" />
+    <result column="pactname" property="pactname" jdbcType="VARCHAR" />
+    <result column="pactusername" property="pactusername" jdbcType="VARCHAR" />
+    <result column="pactzt" property="pactzt" jdbcType="INTEGER" />
+    <result column="timetype" property="timetype" jdbcType="INTEGER" />
+    <result column="pacttype" property="pacttype" jdbcType="INTEGER" />
+    <result column="starttime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="pactmatter" property="pactmatter" jdbcType="VARCHAR" />
+    <result column="pactaccessory" property="pactaccessory" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="queryPactcount" resultType="long" parameterType="com.xb.domain.Pact">
+  	select count(*) from pact where 1 = 1
+  	<if test="pactUserNameStr != null and pactUserNameStr != ''">
+  		and pactusername like '%${pactUserNameStr}%'
+  	</if>
+  	<if test="pactNameStr != null and pactNameStr != ''">
+  		and pactname like '%${pactNameStr}%'
+  	</if>
+  </select>
+
+  <select id="queryPact" resultMap="BaseResultMap" parameterType="com.xb.domain.Pact" >
+  	SELECT * from pact where 1 = 1 
+  	<if test="pact.pactUserNameStr != null and pact.pactUserNameStr!= ''">
+  		and  pactusername like '%${pact.pactUserNameStr}%'
+  	</if>
+  	<if test="pact.pactNameStr != null and pact.pactNameStr != ''">
+  		and  pactname like '%${pact.pactNameStr}%'
+  	</if>
+  	limit #{start},#{rows}
+  </select>
+  
+  <delete id="deletePact" parameterType="com.xb.domain.Pact">
+  		delete from pact where pactid=#{pactid}
+  </delete>
+
+  <insert id="addPact" parameterType="com.xb.domain.Pact" >
+    insert into pact (pactid, pactname, pactusername, 
+      pactzt, timetype, pacttype, 
+      starttime, endtime, pactmatter, 
+      pactaccessory)
+    values (#{pactid,jdbcType=VARCHAR}, #{pactname,jdbcType=VARCHAR}, #{pactusername,jdbcType=VARCHAR}, 
+      #{pactzt,jdbcType=INTEGER}, #{timetype,jdbcType=INTEGER}, #{pacttype,jdbcType=INTEGER}, 
+      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{pactmatter,jdbcType=VARCHAR}, 
+      #{pactaccessory,jdbcType=VARCHAR})
+  </insert>
+  
+  	 <delete id="deleteAll">
+		delete from pact  where pactid in
+	 <foreach collection="array" item="pactid" index="index" open="(" separator="," close=")">
+            #{pactid}
+	</foreach>
+  
+  </delete>
+  
+   <select id="queryById" resultMap="BaseResultMap">
+	  	select * from pact s where 1=1 
+		  	<if test="pactid!=null and pactid!=''"> 
+		  		and s.pactid=#{pactid}
+		  	</if>
+	  </select>
+  <!-- 	  修改后保存 -->
+	  <update id="updatePactType" parameterType="com.xb.domain.Pact" >
+	    update pact
+		    <set >
+		      <if test="pactusername != null" >
+		        pactusername = #{pactusername},
+		      </if>
+		      <if test="pactname != null" >
+		        pactname = #{pactname},
+		      </if>
+		      <if test="pactzt != null" >
+		        pactzt = #{pactzt},
+		      </if>
+		      <if test="timetype != null" >
+		        timetype = #{timetype},
+		      </if>
+		      <if test="starttime != null" >
+		        starttime = #{starttime},
+		      </if>
+		      <if test="endtime != null" >
+		        endtime = #{endtime},
+		      </if>
+		      <if test="pactmatter != null" >
+		        pactmatter = #{pactmatter},
+		      </if>
+		      <if test="pactaccessory != null" >
+		        pactaccessory = #{pactaccessory},
+		      </if>
+		      <if test="pacttype != null" >
+		        pacttype = #{pacttype},
+		      </if>
+		    </set>
+		   where pactid = #{pactid}
+	  </update>
+  
+<!--   查询要导出的列表 -->
+  <select id="queryPacts" resultMap="BaseResultMap" parameterType="com.xb.domain.Pact" >
+  	SELECT * from pact
+  </select>
+</mapper>

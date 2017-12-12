@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.pact.TryJbxxMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.TryJbxx" >
+    <id column="ry_id" property="ryId" jdbcType="VARCHAR" />
+    <result column="ry_name" property="ryName" jdbcType="VARCHAR" />
+    <result column="ry_eg_name" property="ryEgName" jdbcType="VARCHAR" />
+    <result column="ry_sex" property="rySex" jdbcType="INTEGER" />
+    <result column="ry_csrq" property="ryCsrq" jdbcType="TIMESTAMP" />
+    <result column="ry_identity" property="ryIdentity" jdbcType="INTEGER" />
+    <result column="ry_zzmm" property="ryZzmm" jdbcType="INTEGER" />
+    <result column="ry_jg" property="ryJg" jdbcType="VARCHAR" />
+    <result column="ry_nation" property="ryNation" jdbcType="INTEGER" />
+    <result column="ry_xl" property="ryXl" jdbcType="INTEGER" />
+    <result column="ry_family" property="ryFamily" jdbcType="VARCHAR" />
+    <result column="ry_contact" property="ryContact" jdbcType="VARCHAR" />
+    <result column="ry_img" property="ryImg" jdbcType="VARCHAR" />
+    <result column="ry_phone" property="ryPhone" jdbcType="INTEGER" />
+    <result column="ry_dq_family" property="ryDqFamily" jdbcType="VARCHAR" />
+    <result column="ry_jt_phone" property="ryJtPhone" jdbcType="INTEGER" />
+    <result column="ry_hyzk" property="ryHyzk" jdbcType="INTEGER" />
+    <result column="ry_jj_phone" property="ryJjPhone" jdbcType="INTEGER" />
+    <result column="yg_number" property="ygNumber" jdbcType="INTEGER" />
+    <result column="yg_rz_type" property="ygRzType" jdbcType="INTEGER" />
+    <result column="yg_gzgw" property="ygGzgw" jdbcType="VARCHAR" />
+    <result column="yg_jz_gw" property="ygJzGw" jdbcType="VARCHAR" />
+    <result column="yg_gz_dq" property="ygGzDq" jdbcType="INTEGER" />
+    <result column="yg_gz_emp" property="ygGzEmp" jdbcType="VARCHAR" />
+    <result column="yg_gz_phone" property="ygGzPhone" jdbcType="INTEGER" />
+    <result column="yg_rz_date" property="ygRzDate" jdbcType="TIMESTAMP" />
+    <result column="yg_zz_date" property="ygZzDate" jdbcType="TIMESTAMP" />
+    <result column="yg_form" property="ygForm" jdbcType="INTEGER" />
+    <result column="fj_blood" property="fjBlood" jdbcType="INTEGER" />
+    <result column="fj_tz" property="fjTz" jdbcType="INTEGER" />
+    <result column="fj_by_school" property="fjBySchool" jdbcType="VARCHAR" />
+    <result column="fj_mail" property="fjMail" jdbcType="VARCHAR" />
+    <result column="fj_height" property="fjHeight" jdbcType="INTEGER" />
+    <result column="fj_major" property="fjMajor" jdbcType="VARCHAR" />
+    <result column="fj_fj" property="fjFj" jdbcType="VARCHAR" />
+    <result column="fj_remark" property="fjRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+<!--   查询总条数 -->
+  <select id="queryOrgscount" resultType="long" parameterType="com.xb.domain.TryJbxx">
+  		select count(*) from t_jbxx  where yg_gz_emp='${ygGzEmp}'
+  </select>
+  <select id="queryOrgsPage" resultMap="BaseResultMap" parameterType="com.xb.domain.TryJbxx">
+  	select * from t_ jbxx where yg_gz_emp='${trys.ygGzEmp}'
+  </select>
+</mapper>

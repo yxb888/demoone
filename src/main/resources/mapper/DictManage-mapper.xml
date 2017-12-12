@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.dict.DictManageDao">
+  <resultMap id="BaseResultMap" type="com.xb.domain.Dict" >
+      <id column="dict_id" property="dictId" jdbcType="VARCHAR" />
+    <result column="dict_code" property="dictCode" jdbcType="VARCHAR" />
+    <result column="dict_ifchange" property="dictIfchange" jdbcType="INTEGER" />
+        <result column="dict_treeid" property="dictTreeid" jdbcType="VARCHAR" />
+  </resultMap>
+  
+    <resultMap id="BaseResultMapp" type="com.xb.domain.Dict" >
+      <id column="dict_id" property="dictId" jdbcType="VARCHAR" />
+    <result column="dict_code" property="dictCode" jdbcType="VARCHAR" />
+    <result column="dict_ifchange" property="dictIfchange" jdbcType="INTEGER" />
+        <result column="dict_treeid" property="dictTreeid" jdbcType="VARCHAR" />
+
+      <association 	property="dicttree" javaType="com.xb.domain.DictTree" >
+       <id column="t_dict_id" property="tDictId" jdbcType="VARCHAR" />
+    <result column="t_dict_name" property="tDictName" jdbcType="VARCHAR" />
+    <result column="t_dict_text" property="tDictText" jdbcType="VARCHAR" />
+    <result column="t_dict_url" property="tDictUrl" jdbcType="VARCHAR" />
+    <result column="t_dict_pid" property="tDictPid" jdbcType="VARCHAR" />
+    <result column="t_dict_leaf" property="tDictLeaf" jdbcType="VARCHAR" />
+    <result column="t_dict_code" property="tDictCode" jdbcType="VARCHAR" />
+    <result column="t_dict_enname" property="tDictEnname" jdbcType="VARCHAR" />
+    <result column="t_text" property="tText" jdbcType="VARCHAR" />
+  </association>
+    </resultMap>
+    
+     <resultMap id="BaseResultMapn" type="com.xb.domain.DictTree" >
+      <id column="t_dict_id" property="tDictId" jdbcType="VARCHAR" />
+    <result column="t_dict_name" property="tDictName" jdbcType="VARCHAR" />
+    <result column="t_dict_text" property="tDictText" jdbcType="VARCHAR" />
+    <result column="t_dict_url" property="tDictUrl" jdbcType="VARCHAR" />
+    <result column="t_dict_pid" property="tDictPid" jdbcType="VARCHAR" />
+    <result column="t_dict_leaf" property="tDictLeaf" jdbcType="VARCHAR" />
+    <result column="t_dict_code" property="tDictCode" jdbcType="VARCHAR" />
+    <result column="t_dict_enname" property="tDictEnname" jdbcType="VARCHAR" />
+    <result column="t_text" property="tText" jdbcType="VARCHAR" />
+     
+     
+     
+     
+     </resultMap>
+  
+  
+  <select id="queryTotal" resultType="long"   parameterType="com.xb.domain.Dict">
+  		select count(*) from yxb_dict where 1=1
+  		<if test="dictCode != null and dictCode!=''" >
+		           and dict_code like '%${dictCode}%'
+		 </if>
+		 <if test="dictIfchange != null and dictIfchange!=''" >
+		           and dict_ifchange like '%${dictIfchange}%'
+		  </if>
+  </select>
+  
+  <select id="selectupdate" resultMap="BaseResultMapp"   parameterType="com.xb.domain.Dict">
+  		select *
+  		
+  		from yxb_dict_tree t,yxb_dict y where t.t_dict_id=y.dict_treeid and dict_id=#{dictId}
+  </select>
+  
+  <select id="queryTotall" resultType="long"   parameterType="com.xb.domain.Dict">
+  		select count(*) from yxb_dict where 1=1
+  </select>
+  
+  
+  <!--   分页 -->
+
+	<select id="PageList" resultMap="BaseResultMap" parameterType="com.xb.domain.Dict">
+			select * from yxb_dict where 1=1  
+			<if test="dict.dictCode != null and dict.dictCode!=''" >
+		           and dict_code like '%${dict.dictCode}%'
+		 </if>
+		 <if test="dict.dictIfchange != null and dict.dictIfchange!=''" >
+		           and dict_ifchange like '%${dict.dictIfchange}%'
+		  </if>
+		order	BY dict_code
+			
+			 limit #{start},#{end} 
+		
+	</select>
+	<select id="PageListt" resultMap="BaseResultMap" parameterType="com.xb.domain.Dict">
+			select * from yxb_dict order	BY dict_code limit #{start},#{end}
+		
+	</select>
+  
+	<select id="queryDictTree" resultMap="BaseResultMapn" >
+			select * from yxb_dict_tree 
+		
+	</select>
+  
+  <delete id="deleteDictlist" parameterType="String">
+  
+  delete  from yxb_dict where dict_id in
+   <foreach collection="array" item="dictId" open="(" separator="," close=")">
+            #{dictId}
+        </foreach>
+  
+  
+  </delete>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   <select id="findByUsername" parameterType="string" resultType="com.xb.domain.Dict">
+        SELECT * FROM s_user WHERE username=#{username}
+    </select>
+    
+     <select id="findByUserid" parameterType="int" resultType="com.xb.domain.Dict">
+        SELECT * FROM s_user WHERE userid=#{userid}
+    </select>
+  <insert id="dictAdd" parameterType="com.xb.domain.DictTree" >
+        insert into yxb_dict_tree (t_dict_id, t_dict_name, t_dict_text, 
+      t_dict_url, t_dict_pid, t_dict_leaf, 
+      t_dict_code, t_dict_enname, t_text
+      )
+    values (#{tDictId,jdbcType=VARCHAR}, #{tDictName,jdbcType=VARCHAR}, #{tDictText,jdbcType=VARCHAR}, 
+      #{tDictUrl,jdbcType=VARCHAR}, #{tDictPid,jdbcType=VARCHAR}, #{tDictLeaf,jdbcType=VARCHAR}, 
+      #{tDictCode,jdbcType=VARCHAR}, #{tDictEnname,jdbcType=VARCHAR}, #{tText,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="dictAdddict" parameterType="com.xb.domain.Dict" >
+        insert into yxb_dict (dict_id, dict_code, dict_ifchange,dict_treeid)
+    values (#{dictId,jdbcType=VARCHAR}, #{dictCode,jdbcType=VARCHAR}, #{dictIfchange},#{dictTreeid}
+      )
+  </insert>
+  
+  
+<!--   修改字典 -->
+  
+    <update id="dictupdate" parameterType="com.xb.domain.DictTree" >
+    update yxb_dict_tree
+    <set >
+      <if test="tDictName != null" >
+        t_dict_name = #{tDictName,jdbcType=VARCHAR},
+      </if>
+      <if test="tDictText != null" >
+        t_dict_text = #{tDictText,jdbcType=VARCHAR},
+      </if>
+      <if test="tDictUrl != null" >
+        t_dict_url = #{tDictUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="tDictPid != null" >
+        t_dict_pid = #{tDictPid,jdbcType=VARCHAR},
+      </if>
+      <if test="tDictLeaf != null" >
+        t_dict_leaf = #{tDictLeaf,jdbcType=VARCHAR},
+      </if>
+      <if test="tDictCode != null" >
+        t_dict_code = #{tDictCode,jdbcType=VARCHAR},
+      </if>
+      <if test="tDictEnname != null" >
+        t_dict_enname = #{tDictEnname,jdbcType=VARCHAR},
+      </if>
+      <if test="tText != null" >
+        t_text = #{tText,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where t_dict_id = #{tDictId,jdbcType=VARCHAR}
+  </update>
+  
+    <update id="dictupdatedict" parameterType="com.xb.domain.DictTree" >
+    update yxb_dict
+    <set >
+      <if test="dictCode != null" >
+        dict_code = #{dictCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dictIfchange != null" >
+        dict_ifchange = #{dictIfchange,jdbcType=INTEGER},
+      </if>
+      <if test="dictTreeid != null" >
+        dict_treeid = #{dictTreeid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where dict_treeid = #{dictTreeid,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <insert id="aaaaaaaa" parameterType="com.xb.domain.User" >
+    insert into s_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        USERID,
+      </if>
+      <if test="username != null" >
+        USERNAME,
+      </if>
+      <if test="userpwd != null" >
+        USERPWD,
+      </if>
+      <if test="usermobile != null" >
+        USERMOBILE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userpwd != null" >
+        #{userpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="usermobile != null" >
+        #{usermobile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.workObj.WorkObjMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.WorkObj" >
+<!--     	请假表 -->
+    <result column="workid" property="workid" jdbcType="VARCHAR" />
+    <result column="applydate" property="applydate" jdbcType="TIMESTAMP" />
+    <result column="leavestartdate" property="leavestartdate" jdbcType="TIMESTAMP" />
+    <result column="leaveenddate" property="leaveenddate" jdbcType="TIMESTAMP" />
+    <result column="leavecause" property="leavecause" jdbcType="VARCHAR" />
+    <result column="applystate" property="applystate" jdbcType="INTEGER" />
+    <result column="leavetype" property="leavetype" jdbcType="INTEGER" />
+    <result column="applyid" property="applyid" jdbcType="VARCHAR" />
+    
+<!--     员工表 -->
+	<association property="user" javaType="com.xb.domain.User">
+	    <result column="USERID" property="userid" jdbcType="INTEGER" />
+	    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+	    <result column="USERPWD" property="userpwd" jdbcType="VARCHAR" />
+	    <result column="USERMOBILE" property="usermobile" jdbcType="VARCHAR" />
+	</association>
+  </resultMap>
+  
+  
+  
+    
+<!--   	总条数 -->
+    <select id="queryTotal" resultType="long"  parameterType="com.xb.domain.WorkObj">
+  		select  count(*)  from zsj_work
+  </select>
+  <!--   分页 -->
+
+	<select id="PageList" resultMap="BaseResultMap" parameterType="com.xb.domain.WorkObj">
+			select * from zsj_work limit #{start},#{end}
+		
+	</select>
+  
+<!--   查询详情 -->
+	<select id="queryById" resultMap="BaseResultMap">
+<!-- 			select * from zsj_work s where workid=#{workid}  -->
+			select * from zsj_work w , s_user u where w.applyid=u.userid and workid=#{workid} 
+	</select>
+  <!-- 	批量删除 -->
+	 <delete id="deleteLeaveAll">
+			delete from zsj_work  where workid in
+		 <foreach collection="array" item="tId" index="index" open="(" separator="," close=")">
+	            #{tId}
+		</foreach>
+  	</delete>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <insert id="insert" parameterType="com.xb.domain.WorkObj" >
+    insert into zsj_work (workid, applydate, leavestartdate, 
+      leaveenddate, leavecause, applystate, 
+      leavetype, applyid)
+    values (#{workid,jdbcType=VARCHAR}, #{applydate,jdbcType=TIMESTAMP}, #{leavestartdate,jdbcType=TIMESTAMP}, 
+      #{leaveenddate,jdbcType=TIMESTAMP}, #{leavecause,jdbcType=VARCHAR}, #{applystate,jdbcType=INTEGER}, 
+      #{leavetype,jdbcType=INTEGER}, #{applyid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xb.domain.WorkObj" >
+    insert into zsj_work
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="workid != null" >
+        workid,
+      </if>
+      <if test="applydate != null" >
+        applydate,
+      </if>
+      <if test="leavestartdate != null" >
+        leavestartdate,
+      </if>
+      <if test="leaveenddate != null" >
+        leaveenddate,
+      </if>
+      <if test="leavecause != null" >
+        leavecause,
+      </if>
+      <if test="applystate != null" >
+        applystate,
+      </if>
+      <if test="leavetype != null" >
+        leavetype,
+      </if>
+      <if test="applyid != null" >
+        applyid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="workid != null" >
+        #{workid,jdbcType=VARCHAR},
+      </if>
+      <if test="applydate != null" >
+        #{applydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leavestartdate != null" >
+        #{leavestartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leaveenddate != null" >
+        #{leaveenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leavecause != null" >
+        #{leavecause,jdbcType=VARCHAR},
+      </if>
+      <if test="applystate != null" >
+        #{applystate,jdbcType=INTEGER},
+      </if>
+      <if test="leavetype != null" >
+        #{leavetype,jdbcType=INTEGER},
+      </if>
+      <if test="applyid != null" >
+        #{applyid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

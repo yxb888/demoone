@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.frenshi.RygwtreeMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.Rygwtree" >
+     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="text" property="text" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="start" property="start" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="queryZuTree" resultMap="BaseResultMap">
+    select * from renyuangangweitree where 1 = 1
+    
+  </select>
+  
+  <select id="queryRygwzutree" resultMap="BaseResultMap"  >
+    select * from renyuangangweitree 
+    
+  </select>
+  
+  <select id="queryZuTreeOnse" resultMap="BaseResultMap"  parameterType="String">
+    select * from renyuangangweitree where pid=#{id}
+    
+  </select>
+  
+  <select id="getAllGroupAsTree" resultMap="BaseResultMap" parameterType="String">
+    select * from renyuangangweitree where pid=#{valueOf}
+    
+  </select>
+  <select id="getAllOrgsTree" resultMap="BaseResultMap" parameterType="String">
+    select * from renyuangangweitree where pid=#{id}
+    
+  </select>
+  
+ 
+</mapper>

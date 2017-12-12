@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.treea.TreeaMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.treea.Treea" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="target" property="target" jdbcType="VARCHAR" />
+    <result column="urll" property="urll" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pid, name, icon, target, urll
+  </sql>
+  
+     <select id="queryTreea" parameterType="com.xb.domain.treea.Treea" resultMap="BaseResultMap">
+   
+     select * from t_lf_tree where pid =#{id}
+   
+   </select>
+  
+    <select id="queryTreea2" parameterType="com.xb.domain.treea.Treea" resultMap="BaseResultMap">
+     select * from t_lf_tree where pid is null
+  
+  </select>
+  
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_lf_tree
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.workObj.WorkJobObjMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.WorkJobObj" >
+<!--   	工作表 -->
+    <result column="workid" property="workid" jdbcType="VARCHAR" />
+    <result column="workuuid" property="workuuid" jdbcType="VARCHAR" />
+    <result column="workname" property="workname" jdbcType="VARCHAR" />
+    <result column="workstartdate" property="workstartdate" jdbcType="DATE" />
+    <result column="workenddate" property="workenddate" jdbcType="DATE" />
+    <result column="principal" property="principal" jdbcType="VARCHAR" />
+    <result column="workresult" property="workresult" jdbcType="INTEGER" />
+
+    <result column="workserial" property="workserial" jdbcType="VARCHAR" />
+    <result column="workserialtype" property="workserialtype" jdbcType="INTEGER" />
+    <result column="initiator" property="initiator" jdbcType="VARCHAR" />
+    <result column="workOKNO" property="workOKNO" jdbcType="INTEGER" />
+    
+    <!--     员工表 -->
+	<association property="user" javaType="com.xb.domain.User">
+	    <result column="USERID" property="userid" jdbcType="INTEGER" />
+	    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+	    <result column="USERPWD" property="userpwd" jdbcType="VARCHAR" />
+	    <result column="USERMOBILE" property="usermobile" jdbcType="VARCHAR" />
+	</association>
+  </resultMap>
+  
+  
+  <!--   	总条数  已办-->
+    <select id="queryTotal" resultType="long"  parameterType="com.xb.domain.WorkJobObj">
+  		select  count(*)  from zsj_work_job where workOKNO=1
+  </select>
+  
+    <!--   分页  已办-->
+
+	<select id="PageList" resultMap="BaseResultMap" parameterType="com.xb.domain.WorkJobObj">
+			select * from zsj_work_job w , s_user u where w.principal=u.userid and workOKNO=1 limit #{start},#{end}
+	</select>
+	
+	<!--   	总条数  待办-->
+    <select id="queryTotalD" resultType="long"  parameterType="com.xb.domain.WorkJobObj">
+  		select  count(*)  from zsj_work_job where workOKNO=2
+  </select>
+  
+    <!--   分页 待办 -->
+
+	<select id="PageListD" resultMap="BaseResultMap" parameterType="com.xb.domain.WorkJobObj">
+			select * from zsj_work_job w , s_user u where w.principal=u.userid and workOKNO=2 limit #{start},#{end}
+	</select>
+  
+  
+  <insert id="insert" parameterType="com.xb.domain.WorkJobObj" >
+    insert into zsj_work_job (workid, workuuid, workname, 
+      workstartdate, workenddate, principal, 
+      workresult, workserial, workserialtype, 
+      initiator)
+    values (#{workid,jdbcType=VARCHAR}, #{workuuid,jdbcType=VARCHAR}, #{workname,jdbcType=VARCHAR}, 
+      #{workstartdate,jdbcType=DATE}, #{workenddate,jdbcType=DATE}, #{principal,jdbcType=VARCHAR}, 
+      #{workresult,jdbcType=INTEGER}, #{workserial,jdbcType=VARCHAR}, #{workserialtype,jdbcType=VARCHAR}, 
+      #{initiator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xb.domain.WorkJobObj" >
+    insert into zsj_work_job
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="workid != null" >
+        workid,
+      </if>
+      <if test="workuuid != null" >
+        workuuid,
+      </if>
+      <if test="workname != null" >
+        workname,
+      </if>
+      <if test="workstartdate != null" >
+        workstartdate,
+      </if>
+      <if test="workenddate != null" >
+        workenddate,
+      </if>
+      <if test="principal != null" >
+        principal,
+      </if>
+      <if test="workresult != null" >
+        workresult,
+      </if>
+      <if test="workserial != null" >
+        workserial,
+      </if>
+      <if test="workserialtype != null" >
+        workserialtype,
+      </if>
+      <if test="initiator != null" >
+        initiator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="workid != null" >
+        #{workid,jdbcType=VARCHAR},
+      </if>
+      <if test="workuuid != null" >
+        #{workuuid,jdbcType=VARCHAR},
+      </if>
+      <if test="workname != null" >
+        #{workname,jdbcType=VARCHAR},
+      </if>
+      <if test="workstartdate != null" >
+        #{workstartdate,jdbcType=DATE},
+      </if>
+      <if test="workenddate != null" >
+        #{workenddate,jdbcType=DATE},
+      </if>
+      <if test="principal != null" >
+        #{principal,jdbcType=VARCHAR},
+      </if>
+      <if test="workresult != null" >
+        #{workresult,jdbcType=INTEGER},
+      </if>
+      <if test="workserial != null" >
+        #{workserial,jdbcType=VARCHAR},
+      </if>
+      <if test="workserialtype != null" >
+        #{workserialtype,jdbcType=VARCHAR},
+      </if>
+      <if test="initiator != null" >
+        #{initiator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

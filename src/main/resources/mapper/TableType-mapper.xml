@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.table.TableTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.TableType" >
+    <result column="tabletypeid" property="tabletypeid" jdbcType="INTEGER" />
+    <result column="tabletypename" property="tabletypename" jdbcType="VARCHAR" />
+    <result column="tablequeryname" property="tablequeryname" jdbcType="VARCHAR" />
+    <result column="typestate" property="typestate" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="queryType" resultMap="BaseResultMap">
+  		select * from tabletype
+  </select>
+  
+  <select id="queryTablesTypecount" resultType="long">
+  		select count(*) from tabletype 
+  </select>
+  
+  <select id="queryTablesType" resultMap="BaseResultMap">
+ 		 select * from  tabletype  
+ 		 limit #{start},#{rows}
+  </select>
+    
+   <delete id="deleteTableType" parameterType="com.xb.domain.TableType">
+  		delete from tabletype where tabletypeid=#{tabletypeid}
+  </delete>
+   <delete id="deleteTableTypeAll">
+		delete from tabletype  where tabletypeid in
+	 <foreach collection="array" item="tabletypeid" index="index" open="(" separator="," close=")">
+            #{tabletypeid}
+	</foreach>
+  </delete>
+  
+  <insert id="addTableType" parameterType="com.xb.domain.TableType" >
+    insert into tabletype (tabletypeid, tabletypename, tablequeryname, 
+      typestate, tablecount)
+    values (#{tabletypeid,jdbcType=INTEGER}, #{tabletypename,jdbcType=VARCHAR}, #{tablequeryname,jdbcType=VARCHAR}, 
+      #{typestate,jdbcType=VARCHAR}, #{tablecount,jdbcType=INTEGER})
+  </insert>
+  
+</mapper>

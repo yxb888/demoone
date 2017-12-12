@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.frenshi.RygwjbxxMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.Rygwjbxx" >
+    <id column="ry_id" property="ryId" jdbcType="VARCHAR" />
+    <result column="ry_name" property="ryName" jdbcType="VARCHAR" />
+    <result column="ry_eg_name" property="ryEgName" jdbcType="VARCHAR" />
+    <result column="ry_sex" property="rySex" jdbcType="INTEGER" />
+    <result column="ry_csrq" property="ryCsrq" jdbcType="TIMESTAMP" />
+    <result column="ry_identity" property="ryIdentity" jdbcType="INTEGER" />
+    <result column="ry_zzmm" property="ryZzmm" jdbcType="INTEGER" />
+    <result column="ry_jg" property="ryJg" jdbcType="VARCHAR" />
+    <result column="ry_nation" property="ryNation" jdbcType="INTEGER" />
+    <result column="ry_xl" property="ryXl" jdbcType="INTEGER" />
+    <result column="ry_family" property="ryFamily" jdbcType="VARCHAR" />
+    <result column="ry_contact" property="ryContact" jdbcType="VARCHAR" />
+    <result column="ry_img" property="ryImg" jdbcType="VARCHAR" />
+    <result column="ry_phone" property="ryPhone" jdbcType="INTEGER" />
+    <result column="ry_dq_family" property="ryDqFamily" jdbcType="VARCHAR" />
+    <result column="ry_jt_phone" property="ryJtPhone" jdbcType="INTEGER" />
+    <result column="ry_hyzk" property="ryHyzk" jdbcType="INTEGER" />
+    <result column="ry_jj_phone" property="ryJjPhone" jdbcType="INTEGER" />
+    <result column="yg_number" property="ygNumber" jdbcType="INTEGER" />
+    <result column="yg_rz_type" property="ygRzType" jdbcType="INTEGER" />
+    <result column="yg_gzgw" property="ygGzgw" jdbcType="VARCHAR" />
+    <result column="yg_jz_gw" property="ygJzGw" jdbcType="VARCHAR" />
+    <result column="yg_gz_dq" property="ygGzDq" jdbcType="INTEGER" />
+    <result column="yg_gz_emp" property="ygGzEmp" jdbcType="VARCHAR" />
+    <result column="yg_gz_phone" property="ygGzPhone" jdbcType="INTEGER" />
+    <result column="yg_rz_date" property="ygRzDate" jdbcType="TIMESTAMP" />
+    <result column="yg_zz_date" property="ygZzDate" jdbcType="TIMESTAMP" />
+    <result column="yg_form" property="ygForm" jdbcType="INTEGER" />
+    <result column="fj_blood" property="fjBlood" jdbcType="INTEGER" />
+    <result column="fj_tz" property="fjTz" jdbcType="INTEGER" />
+    <result column="fj_by_school" property="fjBySchool" jdbcType="VARCHAR" />
+    <result column="fj_mail" property="fjMail" jdbcType="VARCHAR" />
+    <result column="fj_height" property="fjHeight" jdbcType="INTEGER" />
+    <result column="fj_major" property="fjMajor" jdbcType="VARCHAR" />
+    <result column="fj_fj" property="fjFj" jdbcType="VARCHAR" />
+    <result column="fj_remark" property="fjRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <!-- 总条数 -->
+  <select id="queryRygwjbxxTotal" resultType="long" parameterType="com.xb.domain.Rygwjbxx">
+  	
+  	select count(*) from t_jbxx where 1 = 1
+   	<if test="rygwjbxx.ryName != null and rygwjbxx.ryName != ''"> 
+  		and ry_name like concat('%',#{rygwjbxx.ryName},'%')
+  	 </if> 
+   	<if test="rygwjbxx.ygGzEmp != null and rygwjbxx.ygGzEmp != ''"> 
+  		and yg_gz_emp =#{rygwjbxx.ygGzEmp}
+  	 </if> 
+  </select>
+  <!-- 分页 -->
+  <select id="queryRygwjbxxPage" resultMap="BaseResultMap">
+  	select * from t_jbxx where 1 = 1
+
+  	<if test="rygwjbxx.ryName != null and rygwjbxx.ryName != ''"> 
+  	and ry_name like concat('%',#{rygwjbxx.ryName},'%')
+  	</if> 
+  		<if test="rygwjbxx.ygGzEmp != null and rygwjbxx.ygGzEmp != ''"> 
+  		and yg_gz_emp =#{rygwjbxx.ygGzEmp}
+  	 </if> 
+  	limit #{start},#{rows} 
+  </select> 
+  
+  <delete id="deleteRygwjbxx" parameterType="com.xb.domain.Rygwjbxx">
+  	delete from t_jbxx where ry_id in
+		<foreach collection="array" item="id" open="(" separator="," close=")">
+		#{id}
+		</foreach>
+  </delete>
+  
+  <select id="queryUpdateRsgw" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select * from t_jbxx where ry_id = #{ryId}
+  </select>
+  
+  
+  <update id="updateRsgw" parameterType="com.xb.domain.Rygwjbxx" >
+    update "t_ ry_jbxx"
+    <set >
+      <if test="ryName != null" >
+        ry_name = #{ryName,jdbcType=VARCHAR},
+      </if>
+      <if test="ryEgName != null" >
+        ry_eg_name = #{ryEgName,jdbcType=VARCHAR},
+      </if>
+      <if test="rySex != null" >
+        ry_sex = #{rySex,jdbcType=INTEGER},
+      </if>
+      <if test="ryCsrq != null" >
+        ry_csrq = #{ryCsrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ryIdentity != null" >
+        ry_identity = #{ryIdentity,jdbcType=INTEGER},
+      </if>
+      <if test="ryZzmm != null" >
+        ry_zzmm = #{ryZzmm,jdbcType=INTEGER},
+      </if>
+      <if test="ryJg != null" >
+        ry_jg = #{ryJg,jdbcType=VARCHAR},
+      </if>
+      <if test="ryNation != null" >
+        ry_nation = #{ryNation,jdbcType=INTEGER},
+      </if>
+      <if test="ryXl != null" >
+        ry_xl = #{ryXl,jdbcType=INTEGER},
+      </if>
+      <if test="ryFamily != null" >
+        ry_family = #{ryFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="ryContact != null" >
+        ry_contact = #{ryContact,jdbcType=VARCHAR},
+      </if>
+      <if test="ryImg != null" >
+        ry_img = #{ryImg,jdbcType=VARCHAR},
+      </if>
+      <if test="ryPhone != null" >
+        ry_phone = #{ryPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ryDqFamily != null" >
+        ry_dq_family = #{ryDqFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="ryJtPhone != null" >
+        ry_jt_phone = #{ryJtPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ryHyzk != null" >
+        ry_hyzk = #{ryHyzk,jdbcType=INTEGER},
+      </if>
+      <if test="ryJjPhone != null" >
+        ry_jj_phone = #{ryJjPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ygNumber != null" >
+        yg_number = #{ygNumber,jdbcType=INTEGER},
+      </if>
+      <if test="ygRzType != null" >
+        yg_rz_type = #{ygRzType,jdbcType=INTEGER},
+      </if>
+      <if test="ygGzgw != null" >
+        yg_gzgw = #{ygGzgw,jdbcType=VARCHAR},
+      </if>
+      <if test="ygJzGw != null" >
+        yg_jz_gw = #{ygJzGw,jdbcType=VARCHAR},
+      </if>
+      <if test="ygGzDq != null" >
+        yg_gz_dq = #{ygGzDq,jdbcType=INTEGER},
+      </if>
+      <if test="ygGzEmp != null" >
+        yg_gz_emp = #{ygGzEmp,jdbcType=VARCHAR},
+      </if>
+      <if test="ygGzPhone != null" >
+        yg_gz_phone = #{ygGzPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ygRzDate != null" >
+        yg_rz_date = #{ygRzDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ygZzDate != null" >
+        yg_zz_date = #{ygZzDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ygForm != null" >
+        yg_form = #{ygForm,jdbcType=INTEGER},
+      </if>
+      <if test="fjBlood != null" >
+        fj_blood = #{fjBlood,jdbcType=INTEGER},
+      </if>
+      <if test="fjTz != null" >
+        fj_tz = #{fjTz,jdbcType=INTEGER},
+      </if>
+      <if test="fjBySchool != null" >
+        fj_by_school = #{fjBySchool,jdbcType=VARCHAR},
+      </if>
+      <if test="fjMail != null" >
+        fj_mail = #{fjMail,jdbcType=VARCHAR},
+      </if>
+      <if test="fjHeight != null" >
+        fj_height = #{fjHeight,jdbcType=INTEGER},
+      </if>
+      <if test="fjMajor != null" >
+        fj_major = #{fjMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="fjFj != null" >
+        fj_fj = #{fjFj,jdbcType=VARCHAR},
+      </if>
+      <if test="fjRemark != null" >
+        fj_remark = #{fjRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ry_id = #{ryId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- <sql id="Base_Column_List" >
+    ry_id, ry_name, ry_eg_name, ry_sex, ry_csrq, ry_identity, ry_zzmm, ry_jg, ry_nation, 
+    ry_xl, ry_family, ry_contact, ry_img, ry_phone, ry_dq_family, ry_jt_phone, ry_hyzk, 
+    ry_jj_phone, yg_number, yg_rz_type, yg_gzgw, yg_jz_gw, yg_gz_dq, yg_gz_emp, yg_gz_phone, 
+    yg_rz_date, yg_zz_date, yg_form, fj_blood, fj_tz, fj_by_school, fj_mail, fj_height, 
+    fj_major, fj_fj, fj_remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from "t_ ry_jbxx"
+    where ry_id = #{ryId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from "t_ ry_jbxx"
+    where ry_id = #{ryId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.xb.domain.Rygwjbxx" >
+    insert into "t_ ry_jbxx" (ry_id, ry_name, ry_eg_name, 
+      ry_sex, ry_csrq, ry_identity, 
+      ry_zzmm, ry_jg, ry_nation, 
+      ry_xl, ry_family, ry_contact, 
+      ry_img, ry_phone, ry_dq_family, 
+      ry_jt_phone, ry_hyzk, ry_jj_phone, 
+      yg_number, yg_rz_type, yg_gzgw, 
+      yg_jz_gw, yg_gz_dq, yg_gz_emp, 
+      yg_gz_phone, yg_rz_date, yg_zz_date, 
+      yg_form, fj_blood, fj_tz, 
+      fj_by_school, fj_mail, fj_height, 
+      fj_major, fj_fj, fj_remark
+      )
+    values (#{ryId,jdbcType=VARCHAR}, #{ryName,jdbcType=VARCHAR}, #{ryEgName,jdbcType=VARCHAR}, 
+      #{rySex,jdbcType=INTEGER}, #{ryCsrq,jdbcType=TIMESTAMP}, #{ryIdentity,jdbcType=INTEGER}, 
+      #{ryZzmm,jdbcType=INTEGER}, #{ryJg,jdbcType=VARCHAR}, #{ryNation,jdbcType=INTEGER}, 
+      #{ryXl,jdbcType=INTEGER}, #{ryFamily,jdbcType=VARCHAR}, #{ryContact,jdbcType=VARCHAR}, 
+      #{ryImg,jdbcType=VARCHAR}, #{ryPhone,jdbcType=INTEGER}, #{ryDqFamily,jdbcType=VARCHAR}, 
+      #{ryJtPhone,jdbcType=INTEGER}, #{ryHyzk,jdbcType=INTEGER}, #{ryJjPhone,jdbcType=INTEGER}, 
+      #{ygNumber,jdbcType=INTEGER}, #{ygRzType,jdbcType=INTEGER}, #{ygGzgw,jdbcType=VARCHAR}, 
+      #{ygJzGw,jdbcType=VARCHAR}, #{ygGzDq,jdbcType=INTEGER}, #{ygGzEmp,jdbcType=VARCHAR}, 
+      #{ygGzPhone,jdbcType=INTEGER}, #{ygRzDate,jdbcType=TIMESTAMP}, #{ygZzDate,jdbcType=TIMESTAMP}, 
+      #{ygForm,jdbcType=INTEGER}, #{fjBlood,jdbcType=INTEGER}, #{fjTz,jdbcType=INTEGER}, 
+      #{fjBySchool,jdbcType=VARCHAR}, #{fjMail,jdbcType=VARCHAR}, #{fjHeight,jdbcType=INTEGER}, 
+      #{fjMajor,jdbcType=VARCHAR}, #{fjFj,jdbcType=VARCHAR}, #{fjRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xb.domain.Rygwjbxx" >
+    insert into "t_ ry_jbxx"
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ryId != null" >
+        ry_id,
+      </if>
+      <if test="ryName != null" >
+        ry_name,
+      </if>
+      <if test="ryEgName != null" >
+        ry_eg_name,
+      </if>
+      <if test="rySex != null" >
+        ry_sex,
+      </if>
+      <if test="ryCsrq != null" >
+        ry_csrq,
+      </if>
+      <if test="ryIdentity != null" >
+        ry_identity,
+      </if>
+      <if test="ryZzmm != null" >
+        ry_zzmm,
+      </if>
+      <if test="ryJg != null" >
+        ry_jg,
+      </if>
+      <if test="ryNation != null" >
+        ry_nation,
+      </if>
+      <if test="ryXl != null" >
+        ry_xl,
+      </if>
+      <if test="ryFamily != null" >
+        ry_family,
+      </if>
+      <if test="ryContact != null" >
+        ry_contact,
+      </if>
+      <if test="ryImg != null" >
+        ry_img,
+      </if>
+      <if test="ryPhone != null" >
+        ry_phone,
+      </if>
+      <if test="ryDqFamily != null" >
+        ry_dq_family,
+      </if>
+      <if test="ryJtPhone != null" >
+        ry_jt_phone,
+      </if>
+      <if test="ryHyzk != null" >
+        ry_hyzk,
+      </if>
+      <if test="ryJjPhone != null" >
+        ry_jj_phone,
+      </if>
+      <if test="ygNumber != null" >
+        yg_number,
+      </if>
+      <if test="ygRzType != null" >
+        yg_rz_type,
+      </if>
+      <if test="ygGzgw != null" >
+        yg_gzgw,
+      </if>
+      <if test="ygJzGw != null" >
+        yg_jz_gw,
+      </if>
+      <if test="ygGzDq != null" >
+        yg_gz_dq,
+      </if>
+      <if test="ygGzEmp != null" >
+        yg_gz_emp,
+      </if>
+      <if test="ygGzPhone != null" >
+        yg_gz_phone,
+      </if>
+      <if test="ygRzDate != null" >
+        yg_rz_date,
+      </if>
+      <if test="ygZzDate != null" >
+        yg_zz_date,
+      </if>
+      <if test="ygForm != null" >
+        yg_form,
+      </if>
+      <if test="fjBlood != null" >
+        fj_blood,
+      </if>
+      <if test="fjTz != null" >
+        fj_tz,
+      </if>
+      <if test="fjBySchool != null" >
+        fj_by_school,
+      </if>
+      <if test="fjMail != null" >
+        fj_mail,
+      </if>
+      <if test="fjHeight != null" >
+        fj_height,
+      </if>
+      <if test="fjMajor != null" >
+        fj_major,
+      </if>
+      <if test="fjFj != null" >
+        fj_fj,
+      </if>
+      <if test="fjRemark != null" >
+        fj_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ryId != null" >
+        #{ryId,jdbcType=VARCHAR},
+      </if>
+      <if test="ryName != null" >
+        #{ryName,jdbcType=VARCHAR},
+      </if>
+      <if test="ryEgName != null" >
+        #{ryEgName,jdbcType=VARCHAR},
+      </if>
+      <if test="rySex != null" >
+        #{rySex,jdbcType=INTEGER},
+      </if>
+      <if test="ryCsrq != null" >
+        #{ryCsrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ryIdentity != null" >
+        #{ryIdentity,jdbcType=INTEGER},
+      </if>
+      <if test="ryZzmm != null" >
+        #{ryZzmm,jdbcType=INTEGER},
+      </if>
+      <if test="ryJg != null" >
+        #{ryJg,jdbcType=VARCHAR},
+      </if>
+      <if test="ryNation != null" >
+        #{ryNation,jdbcType=INTEGER},
+      </if>
+      <if test="ryXl != null" >
+        #{ryXl,jdbcType=INTEGER},
+      </if>
+      <if test="ryFamily != null" >
+        #{ryFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="ryContact != null" >
+        #{ryContact,jdbcType=VARCHAR},
+      </if>
+      <if test="ryImg != null" >
+        #{ryImg,jdbcType=VARCHAR},
+      </if>
+      <if test="ryPhone != null" >
+        #{ryPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ryDqFamily != null" >
+        #{ryDqFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="ryJtPhone != null" >
+        #{ryJtPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ryHyzk != null" >
+        #{ryHyzk,jdbcType=INTEGER},
+      </if>
+      <if test="ryJjPhone != null" >
+        #{ryJjPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ygNumber != null" >
+        #{ygNumber,jdbcType=INTEGER},
+      </if>
+      <if test="ygRzType != null" >
+        #{ygRzType,jdbcType=INTEGER},
+      </if>
+      <if test="ygGzgw != null" >
+        #{ygGzgw,jdbcType=VARCHAR},
+      </if>
+      <if test="ygJzGw != null" >
+        #{ygJzGw,jdbcType=VARCHAR},
+      </if>
+      <if test="ygGzDq != null" >
+        #{ygGzDq,jdbcType=INTEGER},
+      </if>
+      <if test="ygGzEmp != null" >
+        #{ygGzEmp,jdbcType=VARCHAR},
+      </if>
+      <if test="ygGzPhone != null" >
+        #{ygGzPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ygRzDate != null" >
+        #{ygRzDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ygZzDate != null" >
+        #{ygZzDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ygForm != null" >
+        #{ygForm,jdbcType=INTEGER},
+      </if>
+      <if test="fjBlood != null" >
+        #{fjBlood,jdbcType=INTEGER},
+      </if>
+      <if test="fjTz != null" >
+        #{fjTz,jdbcType=INTEGER},
+      </if>
+      <if test="fjBySchool != null" >
+        #{fjBySchool,jdbcType=VARCHAR},
+      </if>
+      <if test="fjMail != null" >
+        #{fjMail,jdbcType=VARCHAR},
+      </if>
+      <if test="fjHeight != null" >
+        #{fjHeight,jdbcType=INTEGER},
+      </if>
+      <if test="fjMajor != null" >
+        #{fjMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="fjFj != null" >
+        #{fjFj,jdbcType=VARCHAR},
+      </if>
+      <if test="fjRemark != null" >
+        #{fjRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xb.domain.Rygwjbxx" >
+    update "t_ ry_jbxx"
+    <set >
+      <if test="ryName != null" >
+        ry_name = #{ryName,jdbcType=VARCHAR},
+      </if>
+      <if test="ryEgName != null" >
+        ry_eg_name = #{ryEgName,jdbcType=VARCHAR},
+      </if>
+      <if test="rySex != null" >
+        ry_sex = #{rySex,jdbcType=INTEGER},
+      </if>
+      <if test="ryCsrq != null" >
+        ry_csrq = #{ryCsrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ryIdentity != null" >
+        ry_identity = #{ryIdentity,jdbcType=INTEGER},
+      </if>
+      <if test="ryZzmm != null" >
+        ry_zzmm = #{ryZzmm,jdbcType=INTEGER},
+      </if>
+      <if test="ryJg != null" >
+        ry_jg = #{ryJg,jdbcType=VARCHAR},
+      </if>
+      <if test="ryNation != null" >
+        ry_nation = #{ryNation,jdbcType=INTEGER},
+      </if>
+      <if test="ryXl != null" >
+        ry_xl = #{ryXl,jdbcType=INTEGER},
+      </if>
+      <if test="ryFamily != null" >
+        ry_family = #{ryFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="ryContact != null" >
+        ry_contact = #{ryContact,jdbcType=VARCHAR},
+      </if>
+      <if test="ryImg != null" >
+        ry_img = #{ryImg,jdbcType=VARCHAR},
+      </if>
+      <if test="ryPhone != null" >
+        ry_phone = #{ryPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ryDqFamily != null" >
+        ry_dq_family = #{ryDqFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="ryJtPhone != null" >
+        ry_jt_phone = #{ryJtPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ryHyzk != null" >
+        ry_hyzk = #{ryHyzk,jdbcType=INTEGER},
+      </if>
+      <if test="ryJjPhone != null" >
+        ry_jj_phone = #{ryJjPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ygNumber != null" >
+        yg_number = #{ygNumber,jdbcType=INTEGER},
+      </if>
+      <if test="ygRzType != null" >
+        yg_rz_type = #{ygRzType,jdbcType=INTEGER},
+      </if>
+      <if test="ygGzgw != null" >
+        yg_gzgw = #{ygGzgw,jdbcType=VARCHAR},
+      </if>
+      <if test="ygJzGw != null" >
+        yg_jz_gw = #{ygJzGw,jdbcType=VARCHAR},
+      </if>
+      <if test="ygGzDq != null" >
+        yg_gz_dq = #{ygGzDq,jdbcType=INTEGER},
+      </if>
+      <if test="ygGzEmp != null" >
+        yg_gz_emp = #{ygGzEmp,jdbcType=VARCHAR},
+      </if>
+      <if test="ygGzPhone != null" >
+        yg_gz_phone = #{ygGzPhone,jdbcType=INTEGER},
+      </if>
+      <if test="ygRzDate != null" >
+        yg_rz_date = #{ygRzDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ygZzDate != null" >
+        yg_zz_date = #{ygZzDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ygForm != null" >
+        yg_form = #{ygForm,jdbcType=INTEGER},
+      </if>
+      <if test="fjBlood != null" >
+        fj_blood = #{fjBlood,jdbcType=INTEGER},
+      </if>
+      <if test="fjTz != null" >
+        fj_tz = #{fjTz,jdbcType=INTEGER},
+      </if>
+      <if test="fjBySchool != null" >
+        fj_by_school = #{fjBySchool,jdbcType=VARCHAR},
+      </if>
+      <if test="fjMail != null" >
+        fj_mail = #{fjMail,jdbcType=VARCHAR},
+      </if>
+      <if test="fjHeight != null" >
+        fj_height = #{fjHeight,jdbcType=INTEGER},
+      </if>
+      <if test="fjMajor != null" >
+        fj_major = #{fjMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="fjFj != null" >
+        fj_fj = #{fjFj,jdbcType=VARCHAR},
+      </if>
+      <if test="fjRemark != null" >
+        fj_remark = #{fjRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ry_id = #{ryId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xb.domain.Rygwjbxx" >
+    update "t_ ry_jbxx"
+    set ry_name = #{ryName,jdbcType=VARCHAR},
+      ry_eg_name = #{ryEgName,jdbcType=VARCHAR},
+      ry_sex = #{rySex,jdbcType=INTEGER},
+      ry_csrq = #{ryCsrq,jdbcType=TIMESTAMP},
+      ry_identity = #{ryIdentity,jdbcType=INTEGER},
+      ry_zzmm = #{ryZzmm,jdbcType=INTEGER},
+      ry_jg = #{ryJg,jdbcType=VARCHAR},
+      ry_nation = #{ryNation,jdbcType=INTEGER},
+      ry_xl = #{ryXl,jdbcType=INTEGER},
+      ry_family = #{ryFamily,jdbcType=VARCHAR},
+      ry_contact = #{ryContact,jdbcType=VARCHAR},
+      ry_img = #{ryImg,jdbcType=VARCHAR},
+      ry_phone = #{ryPhone,jdbcType=INTEGER},
+      ry_dq_family = #{ryDqFamily,jdbcType=VARCHAR},
+      ry_jt_phone = #{ryJtPhone,jdbcType=INTEGER},
+      ry_hyzk = #{ryHyzk,jdbcType=INTEGER},
+      ry_jj_phone = #{ryJjPhone,jdbcType=INTEGER},
+      yg_number = #{ygNumber,jdbcType=INTEGER},
+      yg_rz_type = #{ygRzType,jdbcType=INTEGER},
+      yg_gzgw = #{ygGzgw,jdbcType=VARCHAR},
+      yg_jz_gw = #{ygJzGw,jdbcType=VARCHAR},
+      yg_gz_dq = #{ygGzDq,jdbcType=INTEGER},
+      yg_gz_emp = #{ygGzEmp,jdbcType=VARCHAR},
+      yg_gz_phone = #{ygGzPhone,jdbcType=INTEGER},
+      yg_rz_date = #{ygRzDate,jdbcType=TIMESTAMP},
+      yg_zz_date = #{ygZzDate,jdbcType=TIMESTAMP},
+      yg_form = #{ygForm,jdbcType=INTEGER},
+      fj_blood = #{fjBlood,jdbcType=INTEGER},
+      fj_tz = #{fjTz,jdbcType=INTEGER},
+      fj_by_school = #{fjBySchool,jdbcType=VARCHAR},
+      fj_mail = #{fjMail,jdbcType=VARCHAR},
+      fj_height = #{fjHeight,jdbcType=INTEGER},
+      fj_major = #{fjMajor,jdbcType=VARCHAR},
+      fj_fj = #{fjFj,jdbcType=VARCHAR},
+      fj_remark = #{fjRemark,jdbcType=VARCHAR}
+    where ry_id = #{ryId,jdbcType=VARCHAR}
+  </update> -->
+  
+</mapper>

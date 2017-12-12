@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xb.dao.diqu.DiquMapper" >
+  <resultMap id="BaseResultMap" type="com.xb.domain.Diqu" >
+    <id column="t_id" property="tId" jdbcType="VARCHAR" />
+    <result column="t_diquName" property="tDiquname" jdbcType="VARCHAR" />
+    <result column="t_eg_Name" property="tEgName" jdbcType="VARCHAR" />
+    <result column="t_beizhu" property="tBeizhu" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    t_id, t_diquName, t_eg_Name, t_beizhu
+  </sql>
+  
+  
+<!--   查询单条数据 -->
+    <select id="queryById" resultMap="BaseResultMap">
+	  	select * from t_lf_diqu s where 1=1 
+		  	<if test="tId!=null and tId!=''"> 
+		  		and s.t_id=#{tId}
+		  	</if>
+	  </select>
+	  
+<!-- 查询word -->
+
+    <select id="retriveById"  resultMap="BaseResultMap" >
+	  	select * from t_lf_diqu
+	  </select>
+	  
+	  
+<!-- 	  修改后保存 -->
+	  <update id="updateDQSave" parameterType="com.xb.domain.Diqu" >
+	    update t_lf_diqu
+		    <set >
+		      <if test="tDiquname != null" >
+		        t_diquName = #{tDiquname,jdbcType=VARCHAR},
+		      </if>
+		      <if test="tEgName != null" >
+		        t_eg_Name = #{tEgName,jdbcType=VARCHAR},
+		      </if>
+		      <if test="tBeizhu != null" >
+		        t_beizhu = #{tBeizhu,jdbcType=VARCHAR},
+		      </if>
+		    </set>
+		   where t_id = #{tId,jdbcType=VARCHAR}
+	  </update>
+  
+     <!--  总条数 --> 
+  <select id="queryTotal" resultType="long"  parameterType="com.xb.domain.Diqu">
+  		select count(*) from t_lf_diqu where 1=1
+  		  <if test="tDiquname != null and tDiquname!=''" >
+           and t_diquName like '%${tDiquname}%' 
+         </if>
+  </select>
+     
+  <!--   分页 -->
+
+	<select id="PageList" resultMap="BaseResultMap" parameterType="com.xb.domain.Diqu">
+			select * from t_lf_diqu where 1=1     
+			 <if test="dq.tDiquname!= null and dq.tDiquname!=''" >
+          	 and t_diquName like '%${dq.tDiquname}%' 
+        	 </if>
+			limit #{start},#{end}
+		
+	</select>
+    <delete id="deleteAll" parameterType="String">
+  
+  delete  from t_lf_diqu where t_id in
+   <foreach collection="array" item="tId" open="(" separator="," close=")">
+            #{tId}
+        </foreach>
+  
+  
+  </delete>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_lf_diqu
+    where t_id = #{tId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteOne" parameterType="java.lang.String" >
+    delete from t_lf_diqu
+    where t_id = #{tId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="addDiqu" parameterType="com.xb.domain.Diqu" >
+    insert into t_lf_diqu (t_id, t_diquName, t_eg_Name, 
+      t_beizhu)
+    values (#{tId,jdbcType=VARCHAR}, #{tDiquname,jdbcType=VARCHAR}, #{tEgName,jdbcType=VARCHAR}, 
+      #{tBeizhu,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xb.domain.Diqu" >
+    insert into t_lf_diqu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        t_id,
+      </if>
+      <if test="tDiquname != null" >
+        t_diquName,
+      </if>
+      <if test="tEgName != null" >
+        t_eg_Name,
+      </if>
+      <if test="tBeizhu != null" >
+        t_beizhu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        #{tId,jdbcType=VARCHAR},
+      </if>
+      <if test="tDiquname != null" >
+        #{tDiquname,jdbcType=VARCHAR},
+      </if>
+      <if test="tEgName != null" >
+        #{tEgName,jdbcType=VARCHAR},
+      </if>
+      <if test="tBeizhu != null" >
+        #{tBeizhu,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.xb.domain.Diqu" >
+    update t_lf_diqu
+    set t_diquName = #{tDiquname,jdbcType=VARCHAR},
+      t_eg_Name = #{tEgName,jdbcType=VARCHAR},
+      t_beizhu = #{tBeizhu,jdbcType=VARCHAR}
+    where t_id = #{tId,jdbcType=VARCHAR}
+  </update>
+</mapper>
